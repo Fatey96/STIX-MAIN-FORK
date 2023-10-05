@@ -1,0 +1,12 @@
+.topbar {
+    padding: .5em;
+    text-align: center;
+    border-bottom: 2px;
+    border-bottom-color: #370D00;
+    border-bottom-style: solid;
+}
+
+.footer {
+    padding: .75em;
+    text-align: center;
+}

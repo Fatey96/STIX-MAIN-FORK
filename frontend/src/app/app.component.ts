@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'UNCP-Synthetic-Cyber-Knowledge-Graph';
+  title = 'frontend';
 }

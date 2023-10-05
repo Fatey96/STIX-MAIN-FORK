@@ -14,16 +14,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'UNCP-Synthetic-Cyber-Knowledge-Graph'`, () => {
+  it(`should have as title 'Synthetic Cyber Knowledge Graph'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('UNCP-Synthetic-Cyber-Knowledge-Graph');
+    expect(app.title).toEqual('Synthetic Cyber Knowledge Graph');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('UNCP-Synthetic-Cyber-Knowledge-Graph app is running!');
+    expect(compiled.querySelector('.content span')?.textContent).toContain('Synthetic Cyber Knowledge Graph app is running!');
   });
 });
