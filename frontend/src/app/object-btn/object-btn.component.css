@@ -1,0 +1,21 @@
+button {
+    cursor: pointer;
+    padding: .6em;
+    text-align: center;
+    text-wrap: nowrap;
+    background-color: transparent;
+    border: 2px solid var(--accent-blue);
+    border-radius: 5px;
+    color: var(--text-main);
+    font-size: 1em;
+}
+
+button:hover {
+    padding: .45em;
+    border: 4px solid var(--accent-teal);
+}
+
+button.clicked { 
+    background-color: var(--accent-blue);
+    color: var(--main-bg);
+}
