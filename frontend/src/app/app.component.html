@@ -2,39 +2,50 @@
 <h1>Synthetic Cyber Knowledge Graph</h1>
 
 <div class="content" role="main">
-  <p>This is a description of the scenario. For now, it is just placeholder 
-    content. However, it will explain the Internet of Vehicles scenario that 
-    was presented, including the information that should be shown. At the 
-    moment, I am not sure how this should be stated, so I am just adding more 
-    words here to take up space. I am also not sure how long this paragraph 
-    will be.
+  <p>This is a description of the scenario. For now, it is just placeholder content. However, it will explain the Internet of Vehicles scenario that 
+    was presented, including the information that should be shown. At the moment, I am not sure how this should be stated, so I am just adding more 
+    words here to take up space. I am also not sure how long this paragraph will be.
   </p>
 
   <h2>STIX Domain Objects (SDOs)</h2>
-  <div class="object-buttons">
-    <app-object-btn [btnName]="'Attack Pattern'" [btnClass]="'attack-pattern'"></app-object-btn>
-    <app-object-btn [btnName]="'Campaign'" [btnClass]="'campaign'"></app-object-btn>
-    <app-object-btn [btnName]="'Course of Action'" [btnClass]="'course-of-action'"></app-object-btn>
-    <app-object-btn [btnName]="'Grouping'" [btnClass]="'grouping'"></app-object-btn>
-    <app-object-btn [btnName]="'Identity'" [btnClass]="'identity'"></app-object-btn>
-    <app-object-btn [btnName]="'Indicator'" [btnClass]="'indicator'"></app-object-btn>
-    <app-object-btn [btnName]="'Infrastructure'" [btnClass]="'infrastructure'"></app-object-btn>
-    <app-object-btn [btnName]="'Intrusion Set'" [btnClass]="'intrusion-set'"></app-object-btn>
-    <app-object-btn [btnName]="'Location'" [btnClass]="'location'"></app-object-btn>
-    <app-object-btn [btnName]="'Malware'" [btnClass]="'malware'"></app-object-btn>
-    <app-object-btn [btnName]="'Malware Analysis'" [btnClass]="'malware-analysis'"></app-object-btn>
-    <app-object-btn [btnName]="'Note'" [btnClass]="'note'"></app-object-btn>
-    <app-object-btn [btnName]="'Observed Data'" [btnClass]="'observed-data'"></app-object-btn>
-    <app-object-btn [btnName]="'Opinion'" [btnClass]="'opinion'"></app-object-btn>
-    <app-object-btn [btnName]="'Report'" [btnClass]="'report'"></app-object-btn>
-    <app-object-btn [btnName]="'Threat Actor'" [btnClass]="'threat-actor'"></app-object-btn>
-    <app-object-btn [btnName]="'Tool'" [btnClass]="'tool'"></app-object-btn>
-    <app-object-btn [btnName]="'Vulnerability'" [btnClass]="'vulnerability'"></app-object-btn>
-  </div>
+  <app-object-box [boxClass]="'object-buttons'">
+      <!-- <app-object-btn [btnName]="'Attack Pattern'" [btnClass]="'attack-pattern'" (btnClicked)="objectClicked($event)"></app-object-btn> -->
+      <!-- <app-object-btn [btnName]="'Campaign'" [btnClass]="'campaign'" (btnClicked)="objectClicked($event)"></app-object-btn> -->
+      <!-- <app-object-btn [btnName]="'Course of Action'" [btnClass]="'course-of-action'" (btnClicked)="objectClicked($event)"></app-object-btn> -->
+      <!-- <app-object-btn [btnName]="'Grouping'" [btnClass]="'grouping'" (btnClicked)="objectClicked($event)"></app-object-btn> -->
+      <app-object-btn [btnName]="'Identity'" [btnClass]="'identity'" (btnClicked)="objectClicked($event)"></app-object-btn>
+      <!-- <app-object-btn [btnName]="'Indicator'" [btnClass]="'indicator'" (btnClicked)="objectClicked($event)"></app-object-btn> -->
+      <!-- <app-object-btn [btnName]="'Infrastructure'" [btnClass]="'infrastructure'" (btnClicked)="objectClicked($event)"></app-object-btn> -->
+      <!-- <app-object-btn [btnName]="'Intrusion Set'" [btnClass]="'intrusion-set'" (btnClicked)="objectClicked($event)"></app-object-btn> -->
+      <!-- <app-object-btn [btnName]="'Location'" [btnClass]="'location'" (btnClicked)="objectClicked($event)"></app-object-btn> -->
+      <app-object-btn [btnName]="'Malware'" [btnClass]="'malware'" (btnClicked)="objectClicked($event)"></app-object-btn>
+      <!-- <app-object-btn [btnName]="'Malware Analysis'" [btnClass]="'malware-analysis'" (btnClicked)="objectClicked($event)"></app-object-btn> -->
+      <!-- <app-object-btn [btnName]="'Note'" [btnClass]="'note'" (btnClicked)="objectClicked($event)"></app-object-btn> -->
+      <!-- <app-object-btn [btnName]="'Observed Data'" [btnClass]="'observed-data'" (btnClicked)="objectClicked($event)"></app-object-btn> -->
+      <!-- <app-object-btn [btnName]="'Opinion'" [btnClass]="'opinion'" (btnClicked)="objectClicked($event)"></app-object-btn> -->
+      <!-- <app-object-btn [btnName]="'Report'" [btnClass]="'report'" (btnClicked)="objectClicked($event)"></app-object-btn> -->
+      <app-object-btn [btnName]="'Threat Actor'" [btnClass]="'threat-actor'" (btnClicked)="objectClicked($event)"></app-object-btn>
+      <!-- <app-object-btn [btnName]="'Tool'" [btnClass]="'tool'" (btnClicked)="objectClicked($event)"></app-object-btn> -->
+      <!-- <app-object-btn [btnName]="'Vulnerability'" [btnClass]="'vulnerability'" (btnClicked)="objectClicked($event)"></app-object-btn> -->
+  </app-object-box>
+
+  <app-object-box [boxClass]="'identity'" *ngIf="selectedObjects.includes('identity')">
+    <p>This should only show if the Identity button is clicked.</p>
+  </app-object-box>
+
+  <app-object-box [boxClass]="'malware'" *ngIf="selectedObjects.includes('malware')">
+    <p>This should only show if the Malware button is clicked.</p>
+  </app-object-box>
+
+  <app-object-box [boxClass]="'threat-actor'" *ngIf="selectedObjects.includes('threat-actor')">
+    <p>This should only show if the Threat Actor button is clicked.</p>
+  </app-object-box>
 
   <!-- Footer -->
   <footer>
-    <p>This project has been created in collaboration with the <a href="https://www.uncp.edu/" target="_blank">University of North Carolina at Pembroke</a> and the <a href="https://ncsu-las.org/" target="_blank">NSA Laboratory for Analytic Sciences</a>.</p>
+    <p>This project has been created in collaboration with the <a href="https://www.uncp.edu/" target="_blank">University of North Carolina at Pembroke</a> 
+      and the <a href="https://ncsu-las.org/" target="_blank">NSA Laboratory for Analytic Sciences</a>.
+    </p>
   </footer>
 </div>
 

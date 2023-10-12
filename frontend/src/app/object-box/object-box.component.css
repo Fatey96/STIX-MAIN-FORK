@@ -1,0 +1,10 @@
+div {
+    margin: 1em auto 1em auto;
+    padding: 1em;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    width: 70%;
+    height: fit-content;
+    border: 2px solid var(--accent-gray);
+}

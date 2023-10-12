@@ -14,17 +14,6 @@ p {
 
 h2 {
     text-align: center;
-    padding-bottom: .5em;
     font-size: 1.5em;
     font-weight: 600;
-}
-
-.object-buttons {
-    margin: auto;
-    padding: 1em;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    width: 70%;
-    border: 2px solid var(--accent-gray);
 }

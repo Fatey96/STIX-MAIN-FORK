@@ -4,11 +4,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ObjectBtnComponent } from './object-btn/object-btn.component';
+import { ObjectBoxComponent } from './object-box/object-box.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ObjectBtnComponent
+    ObjectBtnComponent,
+    ObjectBoxComponent
   ],
   imports: [
     BrowserModule,

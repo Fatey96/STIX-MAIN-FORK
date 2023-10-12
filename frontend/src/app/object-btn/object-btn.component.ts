@@ -1,4 +1,4 @@
-import { Component, Input} from '@angular/core';
+import { Component, Input, Output, EventEmitter} from '@angular/core';
 
 @Component({
   selector: 'app-object-btn',
@@ -8,11 +8,12 @@ import { Component, Input} from '@angular/core';
 export class ObjectBtnComponent {
   @Input() btnName: string | undefined
   @Input() btnClass: string | undefined
+  @Output() btnClicked = new EventEmitter<{ objectClass: string | undefined, clicked: boolean }>();
 
   isClicked: boolean = false;
 
-  objectSelect(event: Event) {
+  objectSelect() {
     this.isClicked = !this.isClicked;
-    alert(this.btnName)     // This will be removed later. It is here for testing purposes.
+    this.btnClicked.emit({ objectClass: this.btnClass, clicked: this.isClicked });
   }
 }
