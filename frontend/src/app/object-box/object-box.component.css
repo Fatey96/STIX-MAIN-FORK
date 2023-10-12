@@ -1,5 +1,29 @@
-div {
-    margin: 1em auto 1em auto;
+.header-div {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    width: 70%;
+    margin: 1.5em auto 0 auto;
+}
+
+.header-div h3 {
+    width: auto;
+    margin: initial;
+    font-size: 1.25em;
+    font-weight: 400;
+}
+
+.header-div p {
+    width: auto;
+    margin: initial;
+}
+
+.header-div span {
+    color: var(--accent-blue)
+}
+
+div:not(.header-div) {
+    margin: 0 auto 1em auto;
     padding: 1em;
     display: flex;
     flex-wrap: wrap;
@@ -7,4 +31,5 @@ div {
     width: 70%;
     height: fit-content;
     border: 2px solid var(--accent-gray);
+    border-radius: 5px;
 }

@@ -7,4 +7,6 @@ import { Component, Input } from '@angular/core';
 })
 export class ObjectBoxComponent {
   @Input() boxClass: string | undefined
+  @Input() boxName: string | undefined
+  @Input() isSelected: boolean = false;
 }

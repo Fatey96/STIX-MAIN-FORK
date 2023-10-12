@@ -1,3 +1,7 @@
+<div class="header-div" *ngIf="isSelected">
+    <h3>{{ boxName }}</h3>
+    <p>Type: <span>{{ boxClass }}</span></p>
+</div>
 <div [class]="boxClass">
     <ng-content></ng-content>
 </div>

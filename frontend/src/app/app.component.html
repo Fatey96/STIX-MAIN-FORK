@@ -29,15 +29,15 @@
       <!-- <app-object-btn [btnName]="'Vulnerability'" [btnClass]="'vulnerability'" (btnClicked)="objectClicked($event)"></app-object-btn> -->
   </app-object-box>
 
-  <app-object-box [boxClass]="'identity'" *ngIf="selectedObjects.includes('identity')">
+  <app-object-box [boxName]="'Identity'" [boxClass]="'identity'" [isSelected]="selectedObjects.includes('threat-actor')" *ngIf="selectedObjects.includes('identity')">
     <p>This should only show if the Identity button is clicked.</p>
   </app-object-box>
 
-  <app-object-box [boxClass]="'malware'" *ngIf="selectedObjects.includes('malware')">
+  <app-object-box [boxName]="'Malware'" [boxClass]="'malware'" [isSelected]="selectedObjects.includes('threat-actor')" *ngIf="selectedObjects.includes('malware')">
     <p>This should only show if the Malware button is clicked.</p>
   </app-object-box>
 
-  <app-object-box [boxClass]="'threat-actor'" *ngIf="selectedObjects.includes('threat-actor')">
+  <app-object-box [boxName]="'Threat Actor'" [boxClass]="'threat-actor'" [isSelected]="selectedObjects.includes('threat-actor')" *ngIf="selectedObjects.includes('threat-actor')">
     <p>This should only show if the Threat Actor button is clicked.</p>
   </app-object-box>
 
