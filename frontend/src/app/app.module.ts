@@ -1,20 +1,26 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ObjectBtnComponent } from './object-btn/object-btn.component';
 import { ObjectBoxComponent } from './object-box/object-box.component';
+import { ObjectInfoComponent } from './object-info/object-info.component';
+import { ObjectFormComponent } from './object-form/object-form.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ObjectBtnComponent,
-    ObjectBoxComponent
+    ObjectBoxComponent,
+    ObjectInfoComponent,
+    ObjectFormComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

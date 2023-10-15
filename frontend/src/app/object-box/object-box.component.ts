@@ -6,7 +6,14 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./object-box.component.css']
 })
 export class ObjectBoxComponent {
-  @Input() boxClass: string | undefined
+  @Input() stixType: string | undefined
   @Input() boxName: string | undefined
-  @Input() isSelected: boolean = false;
+  @Input() formFields: any[] = []
+  @Input() isSelected: boolean = false
+
+  formCount: number[] = [0]
+
+  addForm() {
+    this.formCount.push(1)
+  }
 }

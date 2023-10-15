@@ -22,14 +22,29 @@
     color: var(--accent-blue)
 }
 
-div:not(.header-div) {
+.form-container {
     margin: 0 auto 1em auto;
     padding: 1em;
-    display: flex;
-    flex-wrap: wrap;
     gap: 12px;
     width: 70%;
     height: fit-content;
     border: 2px solid var(--accent-gray);
     border-radius: 5px;
+}
+
+button {
+    cursor: pointer;
+    padding: .6em;
+    text-align: center;
+    text-wrap: nowrap;
+    background-color: transparent;
+    border: 2px solid var(--accent-blue);
+    border-radius: 5px;
+    color: var(--text-main);
+    font-size: 1em;
+}
+
+button:hover {
+    padding: .45em;
+    border: 4px solid var(--accent-teal);
 }

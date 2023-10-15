@@ -1,7 +1,19 @@
-<div class="header-div" *ngIf="isSelected">
+<div class="header-div">
     <h3>{{ boxName }}</h3>
-    <p>Type: <span>{{ boxClass }}</span></p>
+    <p>Type: <span>{{ stixType }}</span></p>
 </div>
-<div [class]="boxClass">
-    <ng-content></ng-content>
+
+<div class="form-container">
+    <ng-container *ngFor="let form of formCount">
+        <app-object-form [class]="stixType">
+            <ng-container *ngFor="let field of formFields">
+                <app-object-info 
+                    [stixProperty]="field.stixProperty" 
+                    [propertyName]="field.propertyName" 
+                    [isRequired]="field.isRequired">
+                </app-object-info>
+            </ng-container>
+        </app-object-form>
+    </ng-container>
+    <button (click)="addForm()">Add Another {{ boxName }}</button>
 </div>
