@@ -1,4 +1,4 @@
-import { Component, Input, ViewChildren, QueryList } from '@angular/core';
+import { Component, Input, ViewChildren, QueryList, Output, EventEmitter } from '@angular/core';
 import { ObjectFormComponent } from '../object-form/object-form.component';
 
 @Component({
@@ -7,20 +7,50 @@ import { ObjectFormComponent } from '../object-form/object-form.component';
   styleUrls: ['./object-box.component.css']
 })
 export class ObjectBoxComponent {
-  @Input() stixType: string | undefined
-  @Input() boxName: string | undefined
-  @Input() formFields: any[] = []
-  @Input() isSelected: boolean = false
+  @Input() stixType!: string   // Type of the STIX object this box represents
+  @Input() boxName!: string    // Display name of the box
+  @Input() formFields: any[] = []   // Fields to be displayed in the form within the box
+  @Input() isSelected: boolean = false    // Flag to check if the box is currently selected  
+  @Output() formAdded = new EventEmitter<void>()  // Event emitted when a new form is added
+  @Output() formDeleted = new EventEmitter<void>()  // Event emitted when a form is deleted
+  @Output() lastFormDeleted = new EventEmitter<string>()  // Event emitted when the last form inside the box is deleted
+  @ViewChildren(ObjectFormComponent) forms!: QueryList<ObjectFormComponent> 
 
-  @ViewChildren(ObjectFormComponent) forms!: QueryList<ObjectFormComponent> // Query to get all child components of ObjectFormComponent within this component
-  formCount: number[] = [0] // Form array initialized with one element to display one form by default
+  // Contains details of each form within the box, initialized with one form to ensure there's always at least one form displayed by default
+  formDetails: Array<{ id: number, fields: any[] }> = [
+    { 
+      id: Date.now(),
+      fields: []
+    }
+  ]
 
-  addForm() { 
-    const areAllFormsValid = this.forms.toArray().every(formComponent => formComponent.isValid()) // Checks if all forms are valid. 'every' returns true if all conditions are met
-    if (areAllFormsValid) { // If all forms are valid, push new element (form) to formCount array
-      this.formCount.push(1)
-    } else {  // Not all forms are valid
+  // Method to add a new form to the box
+  addForm() {
+    // Check if all existing forms in the box are valid.
+    const areAllFormsValid = this.forms.toArray().every(formComponent => formComponent.isValid())
+
+    if (areAllFormsValid) {
+      this.formDetails.push({ id: Date.now(), fields: [] })
+      this.formAdded.emit()
+    } else {
       alert("Please complete all required fields before adding another form.")
     }
   }
+  
+  // Method to delete a specific form based on its ID
+  deleteForm(id: number) {
+    const initialLength = this.formDetails.length;
+    this.formDetails = this.formDetails.filter(form => form.id !== id);
+    if (this.formDetails.length < initialLength) {
+      this.formDeleted.emit();
+      if (this.formDetails.length === 0) {
+        this.lastFormDeleted.emit(this.stixType);
+      }
+    }
+  }
+
+  // Method to check if all the forms within the box are valid
+  areAllFormsValid(): boolean {
+    return this.forms.toArray().every(formComponent => formComponent.isValid())
+  }  
 }

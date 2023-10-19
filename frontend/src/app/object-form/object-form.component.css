@@ -1,9 +1,7 @@
 form {
-    margin: 0 auto 1em auto;
-    padding: 1em;
+    margin-bottom: 1em;
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
     width: 100%;
-    height: fit-content;
 }

@@ -4,8 +4,12 @@
 </div>
 
 <div class="form-container">
-    <ng-container *ngFor="let form of formCount">
-        <app-object-form [class]="stixType">
+    <ng-container *ngFor="let formDetail of formDetails; let i = index">
+        <div class="form-header">
+            <h4 class="formID">{{ stixType }}-{{ i + 1 }}</h4>
+            <button class="delete" (click)="deleteForm(formDetail.id)">Delete</button>
+        </div>
+        <app-object-form [class]="stixType" [formTitle]="stixType + '-' + (i + 1)">
             <ng-container *ngFor="let field of formFields">
                 <app-object-info 
                     [stixProperty]="field.stixProperty" 
@@ -14,6 +18,7 @@
                 </app-object-info>
             </ng-container>
         </app-object-form>
+        <hr *ngIf="i < formDetails.length - 1">
     </ng-container>
-    <button (click)="addForm()">Add Another {{ boxName }}</button>
+    <button class="add-btn" (click)="addForm()">Add Another {{ boxName }}</button>
 </div>

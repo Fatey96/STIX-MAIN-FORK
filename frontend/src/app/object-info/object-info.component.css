@@ -7,8 +7,9 @@
 
 label {
     display: block;
-    font-weight: 500;
-    padding-left: 3px;
+    font-weight: 400;
+    padding-left: 2px;
+    font-size: .9em;
 }
 
 .requirement-indicator {
@@ -16,7 +17,7 @@ label {
     font-weight: 500;
     margin-left: auto;
     color: var(--accent-gray);
-    padding-right: 3px;
+    padding-right: 2px;
 }
 
 .requirement-indicator.required {
@@ -27,6 +28,6 @@ input {
     background-color: transparent;
     border: 1px solid var(--text-main);
     border-radius: 3px;
-    padding: 3px;
+    padding: 2px;
     width: 200px;
 }
