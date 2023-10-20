@@ -1,0 +1,33 @@
+.label-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    width: 100%;
+}
+
+label {
+    display: block;
+    font-weight: 400;
+    padding-left: 2px;
+    font-size: .9em;
+}
+
+.requirement-indicator {
+    font-size: .7em;
+    font-weight: 500;
+    margin-left: auto;
+    color: var(--accent-gray);
+    padding-right: 2px;
+}
+
+.requirement-indicator.required {
+    color: var(--accent-red);
+}
+
+input {
+    background-color: transparent;
+    border: 1px solid var(--text-main);
+    border-radius: 3px;
+    padding: 2px;
+    width: 200px;
+}

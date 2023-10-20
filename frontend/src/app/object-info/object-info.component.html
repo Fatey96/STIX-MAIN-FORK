@@ -1,0 +1,13 @@
+<div class="label-container">
+    <label [for]="stixProperty">
+        {{ propertyName }}
+    </label>
+    <span class="requirement-indicator" [class.required]="isRequired">{{ isRequired ? 'Required' : 'Optional' }}</span>
+</div>
+
+<input type="text" 
+    [id]="stixProperty" 
+    [name]="propertyName" 
+    [required]="isRequired"
+/>
+  
