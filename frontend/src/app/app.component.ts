@@ -327,15 +327,22 @@ export class AppComponent {
     const stixObjects = this.selectedStixObjectDetails.map(detail => this.transformToObject(detail))
     const stixRelationshipsAndSightings = this.createdRelationships.map(rel => this.transformToSTIX(rel))
 
-    // Create a STIX bundle containing all the formatted data.
-    const stixData = [...stixObjects, ...stixRelationshipsAndSightings]
-    const bundle = {
-      type: "bundle",
-      id: "bundle--" + this.generateUUID(),
-      spec_version: "2.1",
-      objects: stixData
-    }
-    // Stringify the bundle for JSON output
-    this.stixOutput = JSON.stringify(bundle, null, 2)
+    // Convert each STIX object and relationship/sighting to its string representation
+    const stixStrings = [...stixObjects, ...stixRelationshipsAndSightings].map(obj => JSON.stringify(obj, null, 2))
+
+    // Join them together, separating by commas and newlines
+    this.stixOutput = stixStrings.join(',\n')
+
+    // The below code would create a STIX bundle
+    // // Create a STIX bundle containing all the formatted data.
+    // const stixData = [...stixObjects, ...stixRelationshipsAndSightings]
+    // const bundle = {
+    //   type: "bundle",
+    //   id: "bundle--" + this.generateUUID(),
+    //   spec_version: "2.1",
+    //   objects: stixData
+    // }
+    // // Stringify the bundle for JSON output
+    // this.stixOutput = JSON.stringify(bundle, null, 2)
   }
 }
