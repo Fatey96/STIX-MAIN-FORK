@@ -327,13 +327,46 @@ export class AppComponent {
     const stixObjects = this.selectedStixObjectDetails.map(detail => this.transformToObject(detail))
     const stixRelationshipsAndSightings = this.createdRelationships.map(rel => this.transformToSTIX(rel))
 
-    // Convert each STIX object and relationship/sighting to its string representation
-    const stixStrings = [...stixObjects, ...stixRelationshipsAndSightings].map(obj => JSON.stringify(obj, null, 2))
+    //! Generate dataset #, objects, and relationships
+    // Generate the objects array
+    const objectsOutput = stixObjects.map(obj => ({
+      type: obj.type,
+      name: obj.name
+    }))
 
-    // Join them together, separating by commas and newlines
-    this.stixOutput = stixStrings.join(',\n')
+    // Generate the relationships array using index references
+    const relationshipsOutput = stixRelationshipsAndSightings.map(rel => {
+      // If it's a sighting, it will only have a source
+      if (rel.type === 'sighting') {
+        return {
+          source: stixObjects.findIndex(obj => obj.id === rel.sighting_of_ref),
+          relationship: rel.type // This will set relationship as 'sighting'
+        }
+      }
+      return {
+        source: stixObjects.findIndex(obj => obj.id === rel.source_ref),
+        target: stixObjects.findIndex(obj => obj.id === rel.target_ref),
+        relationship: rel.relationship_type
+      }
+    })
 
-    // The below code would create a STIX bundle
+    // Construct the final output structure
+    const finalOutput = {
+      dataset: 1,
+      objects: objectsOutput,
+      relationships: relationshipsOutput
+    }
+
+    this.stixOutput = JSON.stringify(finalOutput, null, 2);
+
+    //! The below code would display the STIX objects and relationships without creating a bundle
+    // // Convert each STIX object and relationship/sighting to its string representation
+    // const stixStrings = [...stixObjects, ...stixRelationshipsAndSightings].map(obj => JSON.stringify(obj, null, 2))
+
+    // // Join them together, separating by commas and newlines
+    // this.stixOutput = stixStrings.join(',\n')
+
+    //! The below code would create a STIX bundle
     // // Create a STIX bundle containing all the formatted data.
     // const stixData = [...stixObjects, ...stixRelationshipsAndSightings]
     // const bundle = {
