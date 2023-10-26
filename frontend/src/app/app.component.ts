@@ -2,6 +2,8 @@ import { Component, ViewChildren, QueryList } from '@angular/core';
 import { ObjectBtnComponent } from './object-btn/object-btn.component';
 import { ObjectBoxComponent } from './object-box/object-box.component';
 import { RelationshipService } from './relationship.service';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 // Define the structure of the object buttons that represent STIX Domain Objects
 interface ObjectButtonInfo {
@@ -40,7 +42,7 @@ export class AppComponent {
   selectedRelationship: string | null = null  // Currently selected relationship
   createdRelationships: Array<{ type: 'relationship' | 'sighting', sourceDetail: any, relationship?: string, targetDetail: any }> = []  // List of created relationships and sightings
   stixOutput: string = ''  // Stringified STIX output
-  constructor(private relationshipService: RelationshipService) { }
+  constructor(private relationshipService: RelationshipService, private http: HttpClient) { }
 
   // Event handler for when a STIX object button is clicked from STIX Domain Objects (description-page, object-buttons-container)
   onObjectButtonClicked(ObjectButtonInfo: ObjectButtonInfo) {
@@ -312,6 +314,10 @@ export class AppComponent {
     })
   }
 
+  private sendPostRequest(data: any): Observable<any> {
+    return this.http.post<any>('http://localhost:8000/api/addStixData/', data, {observe: 'body', responseType: 'json'})
+  }
+
   // Handles the continue button click event - ensures all STIX objects are in a relationship or sighting
   // If everything is in a relationship/sighting, compiles all STIX data into a single bundle and stringifies it into JSON format
   onContinueClick(): void {
@@ -357,7 +363,15 @@ export class AppComponent {
       relationships: relationshipsOutput
     }
 
-    this.stixOutput = JSON.stringify(finalOutput, null, 2);
+    this.stixOutput = JSON.stringify(finalOutput, null, 2)
+
+    this.sendPostRequest(this.stixOutput).subscribe(
+      response => {
+        console.log(response.message)
+      },
+      error => {
+        console.error("There was an error sending the request:", error)
+    })
 
     //! The below code would display the STIX objects and relationships without creating a bundle
     // // Convert each STIX object and relationship/sighting to its string representation
