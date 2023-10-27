@@ -1,4 +1,4 @@
-from stix_builder import StixBuilder
+from .stix_builder import StixBuilder
 from stix2 import Identity
 import faker
 import json

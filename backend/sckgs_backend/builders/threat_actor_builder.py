@@ -1,4 +1,4 @@
-from stix_builder import StixBuilder
+from .stix_builder import StixBuilder
 from stix2 import ThreatActor
 import faker
 import json
@@ -30,10 +30,10 @@ class ThreatActorBuilder(StixBuilder):
         threat_actor = ThreatActor(name=name)
         return threat_actor
 
-actor_builder1 = ThreatActorBuilder("Custom Threat Actor")
-threat_actor_obj1 = actor_builder1.create()
-print(threat_actor_obj1)
+# actor_builder1 = ThreatActorBuilder("Custom Threat Actor")
+# threat_actor_obj1 = actor_builder1.create()
+# print(threat_actor_obj1)
 
-actor_builder2 = ThreatActorBuilder()
-threat_actor_obj2 = actor_builder2.create()
-print(threat_actor_obj2)
+# actor_builder2 = ThreatActorBuilder()
+# threat_actor_obj2 = actor_builder2.create()
+# print(threat_actor_obj2)
