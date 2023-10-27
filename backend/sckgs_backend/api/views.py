@@ -12,7 +12,8 @@ def add_stix_data(request):
         
         # Do something with the data
         # For now, we'll just print it
-        print(data)
+        
+        print(data['objects'])
         
         return JsonResponse({"message": "Data received."})
     else:

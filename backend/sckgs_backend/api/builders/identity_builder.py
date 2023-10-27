@@ -1,11 +1,7 @@
+from stix_builder import StixBuilder
 from stix2 import Identity
 import faker
 import json
-
-class StixBuilder:
-    def create(self, data):
-        raise NotImplementedError("The create() method must be implemented in child classes.")
-
 
 class IdentityBuilder(StixBuilder):
 
@@ -64,10 +60,10 @@ class IdentityBuilder(StixBuilder):
 
 
 # Example usage:
-builder1 = IdentityBuilder("Custom Identity")
-identity_obj1 = builder1.create()
-print(identity_obj1)
+# builder1 = IdentityBuilder("Custom Identity")
+# identity_obj1 = builder1.create()
+# print(identity_obj1)
 
-builder2 = IdentityBuilder()
-identity_obj2 = builder2.create()
-print(identity_obj2)
+# builder2 = IdentityBuilder()
+# identity_obj2 = builder2.create()
+# print(identity_obj2)
