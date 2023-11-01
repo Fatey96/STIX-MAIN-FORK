@@ -6,8 +6,8 @@ class StixBuilderFactory:
     def create(type, name):
         match type:
             case "identity":
-                print(IdentityBuilder(name).create().serialize(pretty=True))
+                return IdentityBuilder(name).create()
             case "threat-actor":
-                print(ThreatActorBuilder(name).create().serialize(pretty=True))
+                return ThreatActorBuilder(name).create()
             case _:
                 print("Done")
