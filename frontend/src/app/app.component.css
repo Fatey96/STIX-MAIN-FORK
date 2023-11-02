@@ -21,7 +21,7 @@ h2 {    /* Large Titles */
     font-weight: 600;
 }
 
-h3 {    /* Small Titles */
+h3, .dataset-label {    /* Small Titles */
     margin: 0;
     padding: 0;
     font-size: 1.25em;
@@ -189,4 +189,12 @@ select, option {    /* relationship-page, if-relationship/if-sighting, user pick
     font-weight: 500;
 }
 
+.dataset-container {
+    padding-bottom: 1em;
+}
 
+.dataset-input {
+    border: 2px solid var(--accent-gray);
+    border-radius: 2px;
+    background-color: transparent;
+}

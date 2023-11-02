@@ -28,6 +28,11 @@
       </app-object-box>
     </ng-container>
 
+    <div class="dataset-container">
+      <label for="dataset" class="dataset-label">Dataset Amount: </label>
+      <input id="dataset" class="dataset-input" type="number" min="0" max="10000" [(ngModel)]="datasetAmount" (input)="onInput($event)"/>
+    </div>
+
     <button class="select-relationships-btn" *ngIf="totalFormsCount >= 2" (click)="onSelectRelationships()">Select
       Relationships</button>
   </div>
