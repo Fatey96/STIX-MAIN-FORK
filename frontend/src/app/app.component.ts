@@ -2,6 +2,8 @@ import { Component, ViewChildren, QueryList } from '@angular/core';
 import { ObjectBtnComponent } from './object-btn/object-btn.component';
 import { ObjectBoxComponent } from './object-box/object-box.component';
 import { RelationshipService } from './relationship.service';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 // Define the structure of the object buttons that represent STIX Domain Objects
 interface ObjectButtonInfo {
@@ -40,7 +42,8 @@ export class AppComponent {
   selectedRelationship: string | null = null  // Currently selected relationship
   createdRelationships: Array<{ type: 'relationship' | 'sighting', sourceDetail: any, relationship?: string, targetDetail: any }> = []  // List of created relationships and sightings
   stixOutput: string = ''  // Stringified STIX output
-  constructor(private relationshipService: RelationshipService) { }
+  datasetAmount: number | null = null   // Initializing the dataset amount to 10
+  constructor(private relationshipService: RelationshipService, private http: HttpClient) { }
 
   // Event handler for when a STIX object button is clicked from STIX Domain Objects (description-page, object-buttons-container)
   onObjectButtonClicked(ObjectButtonInfo: ObjectButtonInfo) {
@@ -90,6 +93,20 @@ export class AppComponent {
     this.totalFormsCount += byAmount
   }
 
+  onInput(event: any) {
+    const inputValue = parseFloat(event.target.value)
+
+    if (isNaN(inputValue) || inputValue < 1) {
+      this.datasetAmount = null
+    } else if (inputValue > 100000) {
+      this.datasetAmount = 100000
+    } else {
+      this.datasetAmount = inputValue
+    }
+    // Update the input value to match the datasetAmount
+    event.target.value = this.datasetAmount
+  }
+
   // Check if all forms across all selected objects are complete before moving on to the relationships section
   areAllFormsComplete(): boolean {
     return this.objectBoxes.toArray().every(box => box.areAllFormsValid())
@@ -99,22 +116,28 @@ export class AppComponent {
   onSelectRelationships() {
     if (!this.areAllFormsComplete()) {
       alert("Please complete all required fields before selecting relationships.")
-    } else {
-      this.isSelectingRelationships = true
+      return
+    }
 
-      this.objectBoxes.toArray().forEach(box => {
-        box.forms.toArray().forEach(form => {
-          const formData = form.formData
-          this.selectedStixObjectDetails.push({
-            boxName: box.boxName,
-            title: form.formTitle,
-            stixType: box.stixType,
-            id: this.generateUUID(),
-            formData: formData
-          })
+    if (this.datasetAmount === null) {
+      alert("Please enter a valid dataset amount before proceeding.")
+      return
+    }
+
+    this.isSelectingRelationships = true
+
+    this.objectBoxes.toArray().forEach(box => {
+      box.forms.toArray().forEach(form => {
+        const formData = form.formData
+        this.selectedStixObjectDetails.push({
+          boxName: box.boxName,
+          title: form.formTitle,
+          stixType: box.stixType,
+          id: this.generateUUID(),
+          formData: formData
         })
       })
-    }
+    })
   }
 
   // Toggles the visibility of selected object details during the relationship phase
@@ -312,6 +335,10 @@ export class AppComponent {
     })
   }
 
+  private sendPostRequest(data: any): Observable<any> {
+    return this.http.post<any>('http://localhost:8000/api/addStixData/', data, { observe: 'body', responseType: 'json' })
+  }
+
   // Handles the continue button click event - ensures all STIX objects are in a relationship or sighting
   // If everything is in a relationship/sighting, compiles all STIX data into a single bundle and stringifies it into JSON format
   onContinueClick(): void {
@@ -352,12 +379,20 @@ export class AppComponent {
 
     // Construct the final output structure
     const finalOutput = {
-      dataset: 1,
+      dataset: this.datasetAmount,
       objects: objectsOutput,
       relationships: relationshipsOutput
     }
 
-    this.stixOutput = JSON.stringify(finalOutput, null, 2);
+    this.stixOutput = JSON.stringify(finalOutput, null, 2)
+
+    this.sendPostRequest(this.stixOutput).subscribe(
+      response => {
+        console.log(response.message)
+      },
+      error => {
+        console.error("There was an error sending the request:", error)
+      })
 
     //! The below code would display the STIX objects and relationships without creating a bundle
     // // Convert each STIX object and relationship/sighting to its string representation
