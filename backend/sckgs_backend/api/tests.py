@@ -5,11 +5,13 @@ import json
 class TestRequest(TestCase):
     def test_json_data(self):
         json_data = {
-            "dataset": 5,
+            "dataset": 1,
             "objects": [
                 {
                     "type": "identity",
-                    "name": "John Doe"
+                    "name": "John Doe",
+                    "identity_class": "individual",
+                    "options": []
                 },
                 {
                     "type": "threat-actor",
@@ -27,8 +29,8 @@ class TestRequest(TestCase):
                     "relationship": "attributed-to"
                 },
                 {
-                    "source": 0,
-                    "target": 1,
+                    "source": 1,
+                    "target": 2,
                     "relationship": "uses"
                 }
             ]
