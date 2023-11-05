@@ -17,7 +17,7 @@ h1 {    /* Toolbar */
 
 h2 {    /* Large Titles */
     text-align: center;
-    font-size: 1.5em;
+    font-size: 1.35em;
     font-weight: 600;
 }
 
@@ -62,7 +62,7 @@ ul, li {    /* In stix-object-column, object-details-container, displays user in
     width: 100%;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1em;
+    gap: .5em;
 }
 
 .stix-object-column, .stix-relationship-column, .if-relationship, .if-sighting {    /* these are the previously mentioned columns */
@@ -97,6 +97,10 @@ ul, li {    /* In stix-object-column, object-details-container, displays user in
     border-radius: 5px;
 }
 
+.dataset-container {
+    padding-bottom: 1em;
+}
+
 /**********************/
 /* Buttons and Select */
 /**********************/
@@ -128,7 +132,7 @@ ul, li {    /* In stix-object-column, object-details-container, displays user in
     border: 4px solid var(--accent-teal);
 }
 
-.object-title-buttons {     /* relationship-page, stix-object-column, allows the user to view their objects under each category */
+.object-title-buttons, .edit-btn {     /* relationship-page, stix-object-column, allows the user to view their objects under each category */
     display: block;
     margin: auto;
     cursor: pointer;
@@ -142,6 +146,15 @@ ul, li {    /* In stix-object-column, object-details-container, displays user in
     color: var(--text-main);
     font-size: 1em;
     margin-top: .75em;
+}
+
+.edit-btn {
+    border: 2px solid var(--accent-blue);
+    font-weight: 500;
+}
+
+.edit-btn:hover {
+    border: 4px solid var(--accent-teal);
 }
 
 .create-btn {   /* relationship-page, if-relationship/if-sighting, button to confirm the creation of relationship or sighting */
@@ -160,7 +173,7 @@ ul, li {    /* In stix-object-column, object-details-container, displays user in
     margin-top: .75em;
 }
 
-.relationship-label, select {   
+.relationship-label, .relationship-select {   
     display: block;
     margin: auto;
     cursor: pointer;
@@ -176,7 +189,7 @@ ul, li {    /* In stix-object-column, object-details-container, displays user in
     margin-top: .75em;
 }
 
-select, option {    /* relationship-page, if-relationship/if-sighting, user picks their options for creating a relationship */
+.relationship-select, .relationship-option {    /* relationship-page, if-relationship/if-sighting, user picks their options for creating a relationship */
     background-color: var(--main-bg);
     margin-top: 0;
     margin-bottom: 1em;
@@ -187,10 +200,6 @@ select, option {    /* relationship-page, if-relationship/if-sighting, user pick
 /***********************/
 .object-title-h4 {      /* relationship-page, stix-object-column & relationship-column, provides the object titles of the created relationships */
     font-weight: 500;
-}
-
-.dataset-container {
-    padding-bottom: 1em;
 }
 
 .dataset-input {

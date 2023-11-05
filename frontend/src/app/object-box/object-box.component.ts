@@ -40,15 +40,15 @@ export class ObjectBoxComponent {
   // Method to delete a specific form based on its ID
   deleteForm(id: number) {
     const initialLength = this.formDetails.length;
-    this.formDetails = this.formDetails.filter(form => form.id !== id);
+    this.formDetails = this.formDetails.filter(form => form.id !== id)
     if (this.formDetails.length < initialLength) {
-      this.formDeleted.emit();
+      this.formDeleted.emit()
       if (this.formDetails.length === 0) {
-        this.lastFormDeleted.emit(this.stixType);
+        this.lastFormDeleted.emit(this.stixType)
       }
     }
   }
-
+  
   // Method to check if all the forms within the box are valid
   areAllFormsValid(): boolean {
     return this.forms.toArray().every(formComponent => formComponent.isValid())

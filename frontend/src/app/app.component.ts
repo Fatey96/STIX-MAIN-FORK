@@ -112,6 +112,16 @@ export class AppComponent {
     return this.objectBoxes.toArray().every(box => box.areAllFormsValid())
   }
 
+  // This prevents the user from being able to select the same object for both source and target for relationships
+  onSourceReferenceChange() {
+    // Check if the selected values are the same
+    if (this.selectedSourceReference === this.selectedTargetReference) {
+      // If they are the same, clear the "Target Reference"
+      this.selectedTargetReference = null
+      this.updateAvailableRelationships()
+    }
+  }
+
   // When the user tries to move on to the relationship selection phase, it ensures that all forms are complete and stores the data
   onSelectRelationships() {
     if (!this.areAllFormsComplete()) {
@@ -129,15 +139,32 @@ export class AppComponent {
     this.objectBoxes.toArray().forEach(box => {
       box.forms.toArray().forEach(form => {
         const formData = form.formData
-        this.selectedStixObjectDetails.push({
-          boxName: box.boxName,
-          title: form.formTitle,
-          stixType: box.stixType,
-          id: this.generateUUID(),
-          formData: formData
+          this.selectedStixObjectDetails.push({
+            boxName: box.boxName,
+            title: form.formTitle,
+            stixType: box.stixType,
+            id: this.generateUUID(),
+            formData: formData,
+          })
         })
       })
-    })
+    
+    console.log("onSelectRelationships objectBoxes")
+    console.log(this.objectBoxes)
+    console.log("onSelectRelationships createdRelationships")
+    console.log(this.createdRelationships)
+  }
+
+  // When the user clicks the Edit Objects button to go back to the first page
+  onEditObjects() {
+    this.isSelectingRelationships = false
+    this.selectedStixObjectDetails = []
+    this.stixOutput = ""
+    console.log(this.createdRelationships)
+    this.createdRelationships = []
+
+    console.log("onEditObjects createdRelationships")
+    console.log(this.createdRelationships)
   }
 
   // Toggles the visibility of selected object details during the relationship phase

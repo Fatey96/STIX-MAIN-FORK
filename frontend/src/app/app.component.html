@@ -19,9 +19,24 @@
     </div>
 
     <ng-container
-      *ngFor="let box of [{name: 'Identity', type: 'identity', fields: [{ stixProperty: 'name', propertyName: 'Name', isRequired: true }, { stixProperty: 'description', propertyName: 'Description', isRequired: false }, { stixProperty: 'contact_information', propertyName: 'Contact Information', isRequired: false }]}, 
-      {name: 'Malware', type: 'malware', fields: [{ stixProperty: 'name', propertyName: 'Name', isRequired: false }, { stixProperty: 'description', propertyName: 'Description', isRequired: false }]}, 
-      {name: 'Threat Actor', type: 'threat-actor', fields: [{ stixProperty: 'name', propertyName: 'Name', isRequired: true }, { stixProperty: 'description', propertyName: 'Description', isRequired: false }]}]">
+      *ngFor="let box of [
+        {name: 'Identity', type: 'identity', fields: [
+          { inputType: 'text', stixProperty: 'name', propertyName: 'Name', isRequired: true }, 
+          { inputType: 'text', stixProperty: 'description', propertyName: 'Description', isRequired: false }, 
+          { inputType: 'text', stixProperty: 'contact_information', propertyName: 'Contact Information', isRequired: false },
+          { inputType: 'select', stixProperty: 'exampleSelect', propertyName: 'Example Select', isRequired: false, selectOptions: ['Option 1', 'Option 2', 'Option 3'] },
+          { inputType: 'checkbox', stixProperty: 'exampleCheckbox', propertyName: 'Example Checkbox', isRequired: false, checkboxOptions: ['Option 1', 'Option 2', 'Option 3'] },
+          { inputType: 'timestamp', stixProperty: 'exampleTimestamp', propertyName: 'Example Timestamp', isRequired: false }
+        ]}, 
+        {name: 'Malware', type: 'malware', fields: [
+          { inputType: 'text', stixProperty: 'name', propertyName: 'Name', isRequired: false }, 
+          { inputType: 'text', stixProperty: 'description', propertyName: 'Description', isRequired: false }
+        ]}, 
+        {name: 'Threat Actor', type: 'threat-actor', fields: [
+          { inputType: 'text', stixProperty: 'name', propertyName: 'Name', isRequired: true }, 
+          { inputType: 'text', stixProperty: 'description', propertyName: 'Description', isRequired: false }
+        ]}
+      ]">
       <app-object-box [boxName]="box.name" [stixType]="box.type" *ngIf="isStixObjectSelected(box.type)"
         (lastFormDeleted)="onLastFormRemoved($event)" (formAdded)="updateTotalFormsCount(1)"
         (formDeleted)="updateTotalFormsCount(-1)" [formFields]="box.fields">
@@ -30,7 +45,8 @@
 
     <div class="dataset-container">
       <label for="dataset" class="dataset-label">Dataset Amount: </label>
-      <input id="dataset" class="dataset-input" type="number" min="0" max="10000" [(ngModel)]="datasetAmount" (input)="onInput($event)"/>
+      <input id="dataset" class="dataset-input" type="number" min="0" max="10000" [(ngModel)]="datasetAmount"
+        (input)="onInput($event)" />
     </div>
 
     <button class="select-relationships-btn" *ngIf="totalFormsCount >= 2" (click)="onSelectRelationships()">Select
@@ -41,6 +57,7 @@
     <div class="relationship-selection-container">
       <div class="stix-object-column">
         <h2>STIX Domain Objects</h2>
+        <button class="edit-btn" (click)="onEditObjects()">Edit Objects</button>
         <ng-container *ngFor="let object of selectedStixObjects">
           <!-- Display the object title -->
           <button class="object-title-buttons" (click)="toggleStixObjectDetailsVisibility(object.name)">
@@ -76,18 +93,19 @@
       <div class="if-relationship" *ngIf="selectedRelationshipType === 'relationship'">
         <h2>Create the Relationship</h2>
         <h3>Source Reference:</h3>
-        <select [(ngModel)]="selectedSourceReference" (change)="updateAvailableRelationships()">
-          <option *ngFor="let detail of selectedStixObjectDetails" [value]="detail.title">{{ detail.title }}</option>
+        <select class="relationship-select" [(ngModel)]="selectedSourceReference" (change)="onSourceReferenceChange()">
+          <option class="relationship-option" *ngFor="let detail of selectedStixObjectDetails" [value]="detail.title">{{ detail.title }}</option>
         </select>
 
         <h3>Target Reference:</h3>
-        <select [(ngModel)]="selectedTargetReference" (change)="updateAvailableRelationships()">
-          <option *ngFor="let detail of selectedStixObjectDetails" [value]="detail.title">{{ detail.title }}</option>
+        <select class="relationship-select" [(ngModel)]="selectedTargetReference" (change)="updateAvailableRelationships()">
+          <option class="relationship-option" *ngFor="let detail of selectedStixObjectDetails" [value]="detail.title"
+            [disabled]="selectedSourceReference === detail.title">{{ detail.title }}</option>
         </select>
 
         <h3>Relationship:</h3>
-        <select [(ngModel)]="selectedRelationship">
-          <option *ngFor="let relationship of availableRelationships" [value]="relationship">{{ relationship }}</option>
+        <select class="relationship-select" [(ngModel)]="selectedRelationship">
+          <option class="relationship-option" *ngFor="let relationship of availableRelationships" [value]="relationship">{{ relationship }}</option>
         </select>
         <button class="create-btn" (click)="createRelationship()">Create Relationship</button>
       </div>
@@ -95,8 +113,8 @@
       <div class="if-sighting" *ngIf="selectedRelationshipType === 'sighting'">
         <h2>Create the Relationship</h2>
         <h3>Sighting of Reference:</h3>
-        <select [(ngModel)]="selectedSightingReference">
-          <option *ngFor="let detail of selectedStixObjectDetails" [value]="detail.title">{{ detail.title }}</option>
+        <select class="relationship-select" [(ngModel)]="selectedSightingReference">
+          <option class="relationship-option" *ngFor="let detail of selectedStixObjectDetails" [value]="detail.title">{{ detail.title }}</option>
         </select>
         <button class="create-btn" (click)="createSighting()">Create Sighting</button>
       </div>

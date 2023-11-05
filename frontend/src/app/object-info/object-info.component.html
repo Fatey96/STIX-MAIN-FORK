@@ -5,9 +5,30 @@
     <span class="requirement-indicator" [class.required]="isRequired">{{ isRequired ? 'Required' : 'Optional' }}</span>
 </div>
 
-<input type="text" 
+<input class="input-field" type="text" *ngIf="inputType === 'text'"
     [id]="stixProperty" 
     [name]="propertyName" 
     [required]="isRequired"
 />
-  
+
+<select class="select-field" *ngIf="inputType === 'select'" 
+    [id]="stixProperty" 
+    [name]="propertyName" 
+    [required]="isRequired">
+    <option class="option-field" *ngFor="let option of selectOptions" 
+        [value]="option">{{ option }}
+    </option>
+</select>
+
+<div class="checkbox-container" *ngIf="inputType === 'checkbox'">
+    <div class="checkbox-option" *ngFor="let option of checkboxOptions">
+      <input class="checkbox-box" type="checkbox" [name]="stixProperty" [value]="option" /> 
+        {{ option }}
+    </div>
+</div>
+
+<input class="input-field" type="datetime-local" *ngIf="inputType === 'timestamp'"
+    [id]="stixProperty"
+    [name]="propertyName"
+    [required]="isRequired"
+/>
