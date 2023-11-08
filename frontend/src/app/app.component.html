@@ -18,26 +18,45 @@
       </app-object-btn>
     </div>
 
-    <ng-container
-      *ngFor="let box of [
+    <!--* Below are example lines for adding different types of input.
+      { inputType: 'text', stixProperty: 'exampleText', propertyName: 'Example Text', isRequired: false }
+      { inputType: 'select', stixProperty: 'exampleSelect', propertyName: 'Example Select', isRequired: false, selectOptions: ['Option 1', 'Option 2', 'Option 3'] }
+      { inputType: 'checkbox', stixProperty: 'exampleCheckbox', propertyName: 'Example Checkbox', isRequired: false, checkboxOptions: ['Option 1', 'Option 2', 'Option 3'] }
+      { inputType: 'timestamp', stixProperty: 'exampleTimestamp', propertyName: 'Example Timestamp', isRequired: false }
+      { inputType: 'radio', stixProperty: 'exampleRadio', propertyName: 'Example Radio', isRequired: false, radioOptions: ['Option 1', 'Option 2'] }
+    -->
+    <ng-container *ngFor="let box of [
         {name: 'Identity', type: 'identity', fields: [
           { inputType: 'text', stixProperty: 'name', propertyName: 'Name', isRequired: true }, 
           { inputType: 'text', stixProperty: 'description', propertyName: 'Description', isRequired: false }, 
           { inputType: 'text', stixProperty: 'contact_information', propertyName: 'Contact Information', isRequired: false },
-          { inputType: 'select', stixProperty: 'exampleSelect', propertyName: 'Example Select', isRequired: false, selectOptions: ['Option 1', 'Option 2', 'Option 3'] },
-          { inputType: 'checkbox', stixProperty: 'exampleCheckbox', propertyName: 'Example Checkbox', isRequired: false, checkboxOptions: ['Option 1', 'Option 2', 'Option 3'] },
-          { inputType: 'timestamp', stixProperty: 'exampleTimestamp', propertyName: 'Example Timestamp', isRequired: false }
-        ]}, 
+          { inputType: 'checkbox', stixProperty: 'roles', propertyName: 'Roles', isRequired: false, checkboxOptions: ['CEO', 'Domain Administrator', 'Doctor', 'Hospital', 'Retailer'] },
+          { inputType: 'radio', stixProperty: 'identity_class', propertyName: 'Identity Class', isRequired: false, radioOptions: ['individual', 'group', 'system', 'organization', 'class', 'unknown'] },
+          { inputType: 'checkbox', stixProperty: 'sectors', propertyName: 'Sectors', isRequired: false, checkboxOptions: ['agriculture', 'education', 'government', 'healthcare', 'infrastructure', 'utilities'] }
+          ]}, 
         {name: 'Malware', type: 'malware', fields: [
           { inputType: 'text', stixProperty: 'name', propertyName: 'Name', isRequired: false }, 
-          { inputType: 'text', stixProperty: 'description', propertyName: 'Description', isRequired: false }
+          { inputType: 'text', stixProperty: 'description', propertyName: 'Description', isRequired: false },
+          { inputType: 'checkbox', stixProperty: 'malware_types', propertyName: 'Malware Types', isRequired: false, checkboxOptions: ['ddos', 'ransomware', 'trojan', 'unknown', 'virus'] },
+          { inputType: 'radio', stixProperty: 'is_family', propertyName: 'Malware Family', isRequired: true, radioOptions: ['Yes', 'No'] },
+          { inputType: 'timestamp', stixProperty: 'first_seen', propertyName: 'First Seen', isRequired: false },
+          { inputType: 'timestamp', stixProperty: 'last_seen', propertyName: 'Last Seen', isRequired: false }
         ]}, 
         {name: 'Threat Actor', type: 'threat-actor', fields: [
           { inputType: 'text', stixProperty: 'name', propertyName: 'Name', isRequired: true }, 
-          { inputType: 'text', stixProperty: 'description', propertyName: 'Description', isRequired: false }
+          { inputType: 'text', stixProperty: 'description', propertyName: 'Description', isRequired: false },
+          { inputType: 'checkbox', stixProperty: 'threat_actor_types', propertyName: 'Threat Actor Type', isRequired: false, checkboxOptions: ['activist', 'criminal', 'hacker', 'nation-state', 'spy', 'unknown'] },
+          { inputType: 'timestamp', stixProperty: 'first_seen', propertyName: 'First Seen', isRequired: false },
+          { inputType: 'timestamp', stixProperty: 'last_seen', propertyName: 'Last Seen', isRequired: false },
+          { inputType: 'checkbox', stixProperty: 'roles', propertyName: 'Roles', isRequired: false, checkboxOptions: ['agent', 'director', 'independent', 'infrastructure-architect', 'infrastructure-operator', 'malware-author', 'sponsor'] },
+          { inputType: 'select', stixProperty: 'sophistication', propertyName: 'Sophistication', isRequired: false, selectOptions: ['none', 'minimal', 'intermediate', 'advanced', 'expert', 'innovator', 'strategic'] },
+          { inputType: 'select', stixProperty: 'resource_level', propertyName: 'Resource Level', isRequired: false, selectOptions: ['individual', 'club', 'contest', 'team', 'organization', 'government'] },
+          { inputType: 'select', stixProperty: 'primary_motivation', propertyName: 'Primary Motivation', isRequired: false, selectOptions: ['accidental', 'coercion', 'organizational-gain', 'personal-gain', 'personal-satisfaction', 'revenge'] },
+          { inputType: 'checkbox', stixProperty: 'secondary_motivations', propertyName: 'Secondary Motivations', isRequired: false, checkboxOptions: ['accidental', 'coercion', 'organizational-gain', 'personal-gain', 'personal-satisfaction', 'revenge'] },
+          { inputType: 'checkbox', stixProperty: 'personal_motivations', propertyName: 'Personal Motivations', isRequired: false, checkboxOptions: ['accidental', 'coercion', 'organizational-gain', 'personal-gain', 'personal-satisfaction', 'revenge'] }
         ]}
       ]">
-      <app-object-box [boxName]="box.name" [stixType]="box.type" *ngIf="isStixObjectSelected(box.type)"
+      <app-object-box [boxName]="box.name" [stixType]="box.type" *ngIf="isObjectSelected(box.type)"
         (lastFormDeleted)="onLastFormRemoved($event)" (formAdded)="updateTotalFormsCount(1)"
         (formDeleted)="updateTotalFormsCount(-1)" [formFields]="box.fields">
       </app-object-box>
@@ -46,10 +65,10 @@
     <div class="dataset-container">
       <label for="dataset" class="dataset-label">Dataset Amount: </label>
       <input id="dataset" class="dataset-input" type="number" min="0" max="10000" [(ngModel)]="datasetAmount"
-        (input)="onInput($event)" />
+        (input)="onDatasetInput($event)" />
     </div>
 
-    <button class="select-relationships-btn" *ngIf="totalFormsCount >= 2" (click)="onSelectRelationships()">Select
+    <button class="select-relationships-btn" *ngIf="totalForms >= 2" (click)="onSelectRelationshipsClick()">Select
       Relationships</button>
   </div>
 
@@ -57,20 +76,20 @@
     <div class="relationship-selection-container">
       <div class="stix-object-column">
         <h2>STIX Domain Objects</h2>
-        <button class="edit-btn" (click)="onEditObjects()">Edit Objects</button>
-        <ng-container *ngFor="let object of selectedStixObjects">
+        <button class="edit-btn" (click)="onEditObjectsClick()">Edit Objects</button>
+        <ng-container *ngFor="let object of selectedObjects">
           <!-- Display the object title -->
-          <button class="object-title-buttons" (click)="toggleStixObjectDetailsVisibility(object.name)">
+          <button class="object-title-buttons" (click)="toggleObjectDetailsVisibility(object.name)">
             {{ object.name }}
           </button>
 
           <!-- Display the object details if the title is selected (visible) -->
-          <ng-container *ngIf="selectedStixObjectDetailsVisible[object.name]">
+          <ng-container *ngIf="displayCreatedObjects[object.name]">
             <div class="object-details-container" *ngFor="let detail of getDetailsForBoxName(object.name)">
               <h4 class="object-title-h4">{{ detail.title }}</h4>
               <ul>
                 <ng-container *ngFor="let field of detail.formData">
-                  <li *ngIf="field.value && field.value.trim() !== ''">
+                  <li>
                     {{ field.key }}: {{ field.value }}
                   </li>
                 </ng-container>
@@ -90,89 +109,95 @@
         <label for="sightingRadio" class="relationship-label">Sighting</label>
       </div>
 
-      <div class="if-relationship" *ngIf="selectedRelationshipType === 'relationship'">
+      <div class="if-relationship" *ngIf="relationshipType === 'relationship'">
         <h2>Create the Relationship</h2>
         <h3>Source Reference:</h3>
-        <select class="relationship-select" [(ngModel)]="selectedSourceReference" (change)="onSourceReferenceChange()">
-          <option class="relationship-option" *ngFor="let detail of selectedStixObjectDetails" [value]="detail.title">{{ detail.title }}</option>
+        <select class="relationship-select" [(ngModel)]="sourceReference" (change)="onSourceReferenceChange()">
+          <option class="relationship-option" *ngFor="let detail of createdStixObjects" [value]="detail.id">{{
+            detail.title }}</option>
         </select>
 
         <h3>Target Reference:</h3>
-        <select class="relationship-select" [(ngModel)]="selectedTargetReference" (change)="updateAvailableRelationships()">
-          <option class="relationship-option" *ngFor="let detail of selectedStixObjectDetails" [value]="detail.title"
-            [disabled]="selectedSourceReference === detail.title">{{ detail.title }}</option>
+        <select class="relationship-select" [(ngModel)]="targetReference" (change)="updateAvailableRelationships()">
+          <option class="relationship-option" *ngFor="let detail of createdStixObjects" [value]="detail.id"
+            [disabled]="sourceReference === detail.id">{{ detail.title }}</option>
         </select>
 
         <h3>Relationship:</h3>
-        <select class="relationship-select" [(ngModel)]="selectedRelationship">
-          <option class="relationship-option" *ngFor="let relationship of availableRelationships" [value]="relationship">{{ relationship }}</option>
+        <select class="relationship-select" [(ngModel)]="chosenRelationship">
+          <option class="relationship-option" *ngFor="let relationship of availableRelationships"
+            [value]="relationship">{{ relationship }}</option>
         </select>
         <button class="create-btn" (click)="createRelationship()">Create Relationship</button>
       </div>
 
-      <div class="if-sighting" *ngIf="selectedRelationshipType === 'sighting'">
+      <div class="if-sighting" *ngIf="relationshipType === 'sighting'">
         <h2>Create the Relationship</h2>
         <h3>Sighting of Reference:</h3>
-        <select class="relationship-select" [(ngModel)]="selectedSightingReference">
-          <option class="relationship-option" *ngFor="let detail of selectedStixObjectDetails" [value]="detail.title">{{ detail.title }}</option>
+        <select class="relationship-select" [(ngModel)]="sightingReference">
+          <option class="relationship-option" *ngFor="let detail of createdStixObjects" [value]="detail.id">{{
+            detail.title }}</option>
         </select>
         <button class="create-btn" (click)="createSighting()">Create Sighting</button>
       </div>
     </div>
 
-    <div *ngFor="let relationship of createdRelationships" class="selected-relationships-container">
-      <!-- If it's a relationship, display Source column -->
-      <div class="relationship-column" *ngIf="relationship.type === 'relationship'">
-        <h3>Source:</h3>
-        <ul class="relationship-detail">
-          <h4 class="object-title-h4">{{ relationship.sourceDetail.title }}</h4>
-          <ng-container *ngFor="let field of relationship.sourceDetail.formData">
-            <li *ngIf="field.value && field.value.trim() !== ''">
-              {{ field.key }}: {{ field.value }}
-            </li>
-          </ng-container>
-        </ul>
-      </div>
+    <div *ngFor="let relationship of relationshipsCreated" class="selected-relationships-column">
+      <div class="selected-relationships-container">
+        <!-- If it's a relationship, display Source column -->
+        <div class="relationship-column" *ngIf="relationship.type === 'relationship'">
+          <h3>Source:</h3>
+          <ul class="relationship-detail">
+            <h4 class="object-title-h4">{{ relationship.sourceDetail.title }}</h4>
+            <ng-container *ngFor="let field of relationship.sourceDetail.formData">
+              <li>
+                {{ field.key }}: {{ field.value }}
+              </li>
+            </ng-container>
+          </ul>
+        </div>
 
-      <!-- If it's a relationship, display Relationship column -->
-      <div class="relationship-column" *ngIf="relationship.type === 'relationship'">
-        <h3>Relationship:</h3>
-        <div class="relationship-detail">
-          {{ relationship.relationship }}
+        <!-- If it's a relationship, display Relationship column -->
+        <div class="relationship-column" *ngIf="relationship.type === 'relationship'">
+          <h3>Relationship:</h3>
+          <div class="relationship-detail">
+            {{ relationship.relationship }}
+          </div>
+        </div>
+
+        <!-- If it's a relationship, display Target column -->
+        <div class="relationship-column" *ngIf="relationship.type === 'relationship'">
+          <h3>Target:</h3>
+          <ul class="relationship-detail">
+            <h4 class="object-title-h4">{{ relationship.targetDetail.title }}</h4>
+            <ng-container *ngFor="let field of relationship.targetDetail.formData">
+              <li>
+                {{ field.key }}: {{ field.value }}
+              </li>
+            </ng-container>
+          </ul>
+        </div>
+
+        <!-- If it's a sighting -->
+        <div class="relationship-column" *ngIf="relationship.type === 'sighting'">
+          <h3>Sighting of Reference:</h3>
+          <ul class="relationship-detail">
+            <h4 class="object-title-h4">{{ relationship.sourceDetail.title }}</h4>
+            <ng-container *ngFor="let field of relationship.sourceDetail.formData">
+              <li>
+                {{ field.key }}: {{ field.value }}
+              </li>
+            </ng-container>
+          </ul>
         </div>
       </div>
-
-      <!-- If it's a relationship, display Target column -->
-      <div class="relationship-column" *ngIf="relationship.type === 'relationship'">
-        <h3>Target:</h3>
-        <ul class="relationship-detail">
-          <h4 class="object-title-h4">{{ relationship.targetDetail.title }}</h4>
-          <ng-container *ngFor="let field of relationship.targetDetail.formData">
-            <li *ngIf="field.value && field.value.trim() !== ''">
-              {{ field.key }}: {{ field.value }}
-            </li>
-          </ng-container>
-        </ul>
-      </div>
-
-      <!-- If it's a sighting -->
-      <div class="relationship-column" *ngIf="relationship.type === 'sighting'">
-        <h3>Sighting of Reference:</h3>
-        <ul class="relationship-detail">
-          <h4 class="object-title-h4">{{ relationship.sourceDetail.title }}</h4>
-          <ng-container *ngFor="let field of relationship.sourceDetail.formData">
-            <li *ngIf="field.value && field.value.trim() !== ''">
-              {{ field.key }}: {{ field.value }}
-            </li>
-          </ng-container>
-        </ul>
-      </div>
+      <button class="delete-btn" (click)="deleteRelationship(relationship)">Delete</button>
     </div>
 
-    <button class="continue" *ngIf="createdRelationships.length > 0" (click)="onContinueClick()">Continue</button>
+    <button class="continue" *ngIf="relationshipsCreated.length > 0" (click)="onContinueClick()">Continue</button>
 
-    <div *ngIf="stixOutput" class="stix-output">
-      <pre>{{ stixOutput }}</pre>
+    <div *ngIf="jsonOutput" class="stix-output">
+      <pre>{{ jsonOutput }}</pre>
     </div>
   </div>
 

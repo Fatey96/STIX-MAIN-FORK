@@ -37,7 +37,7 @@ label {
     background-color: var(--main-bg);
 }
 
-.checkbox-box {
+.checkbox-box, .radio-box {
     accent-color: var(--accent-blue);
     cursor: pointer;
     height: 1em;
@@ -45,7 +45,7 @@ label {
     margin: 4px;
 }
 
-.checkbox-option {
+.checkbox-option, .radio-option {
     display: flex;
     align-items: center;
 }

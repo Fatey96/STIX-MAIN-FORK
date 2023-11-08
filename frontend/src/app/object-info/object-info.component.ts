@@ -12,4 +12,5 @@ export class ObjectInfoComponent {
   @Input() inputType: string = ''
   @Input() selectOptions: string[] = []
   @Input() checkboxOptions: string[] = []
+  @Input() radioOptions: string[] = []
 }

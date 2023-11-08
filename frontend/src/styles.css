@@ -2,13 +2,13 @@
 @import 'app/app.component.css';
 
 :root {
-    --main-bg: #DEDEDB;
+    --main-bg: white;
     --text-main: #010101;
     --text-dim: #0E0E0E;
-    --accent-blue: #2B6777;
-    --accent-teal: #52AB98;
-    --accent-gray: #999999;
-    --accent-red: #9E2A2B;
+    --accent-blue: #2889a3;
+    --accent-teal: #52c2aa;
+    --accent-gray: #818181;
+    --accent-red: red;
 }
 
 * {
