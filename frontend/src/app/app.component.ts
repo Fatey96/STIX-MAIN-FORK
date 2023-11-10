@@ -1,4 +1,4 @@
-import { Component, ViewChildren, QueryList } from '@angular/core';
+import { Component, ViewChildren, QueryList, Renderer2, ElementRef } from '@angular/core';
 import { ObjectBtnComponent } from './object-btn/object-btn.component';
 import { ObjectBoxComponent } from './object-box/object-box.component';
 import { RelationshipService } from './relationship.service';
@@ -6,14 +6,14 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 // Define the structure of the object buttons that represent STIX Domain Objects
-interface ObjectButtonInfo {
+interface ObjectButtonInfo {  // function onObjectButtonClicked
   objectClass?: string
   objectName?: string
   clicked: boolean
 }
 
 // Define the structure of the details of a STIX object for relationship selection
-interface StixObjectDetail {
+interface StixObjectDetail {  // In createdStixObjects array, function getDetailsForBoxName, function transformObjectToStix
   boxName: string
   title: string
   stixType: string
@@ -27,82 +27,78 @@ interface StixObjectDetail {
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  @ViewChildren(ObjectBtnComponent) buttons!: QueryList<ObjectBtnComponent>
-  @ViewChildren(ObjectBoxComponent) objectBoxes!: QueryList<ObjectBoxComponent>
-  selectedStixObjects: { stixType: string; name: string; id: string; }[] = []  // List of currently selected STIX objects
-  totalFormsCount: number = 0  // Total number of forms across all object boxes
-  isSelectingRelationships: boolean = false  // Flag to check if user is selecting relationships
-  selectedStixObjectDetails: StixObjectDetail[] = [] // Details of the selected STIX objects for relationship selection
-  selectedStixObjectDetailsVisible: { [key: string]: boolean } = {}  // Visibility state of each STIX object's details during relationship selection
-  selectedRelationshipType: 'relationship' | 'sighting' | null = null  // Selected relationship type (relationship or sighting)
-  selectedSightingReference: string | null = null  // Selected sighting reference
-  selectedSourceReference: string | null = null  // Selected source of a relationship
-  selectedTargetReference: string | null = null  // Selected target of a relationship
-  availableRelationships: string[] = []  // Available relationships based on selected source and target
-  selectedRelationship: string | null = null  // Currently selected relationship
-  createdRelationships: Array<{ type: 'relationship' | 'sighting', sourceDetail: any, relationship?: string, targetDetail: any }> = []  // List of created relationships and sightings
-  stixOutput: string = ''  // Stringified STIX output
-  datasetAmount: number | null = null   // Initializing the dataset amount to 10
-  constructor(private relationshipService: RelationshipService, private http: HttpClient) { }
+  constructor(private relationshipService: RelationshipService, private http: HttpClient, private renderer: Renderer2, private el: ElementRef) { }
+  @ViewChildren(ObjectBtnComponent) buttons!: QueryList<ObjectBtnComponent>   // in function onLastFormRemoved
+  @ViewChildren(ObjectBoxComponent) objectBoxes!: QueryList<ObjectBoxComponent>   // in functions onObjectButtonClicked, areAllFormsComplete, onSelectRelationshipsClick
+  selectedObjects: { stixType: string; name: string; id: string; }[] = []   // in functions onObjectButtonClicked, isObjectSelected, onLastFormRemoved, canContinue
+  createdStixObjects: StixObjectDetail[] = []  // in functions onSelectRelationshipsClick, onEditObjectsClick, getDetailsForBoxName, updateAvailableRelationships, createRelationship, createSighting, getUnlinkedObjects, onContinueClick
+  displayCreatedObjects: { [key: string]: boolean } = {}   // in function toggleObjectDetailsVisibility
+  totalForms: number = 0   // in functions onObjectButtonClicked, updateTotalFormsCount
+  datasetAmount: number | null = null   // in functions onDatasetInput, onSelectRelationshipsClick, onContinueClick
+  isSelectingRelationships: boolean = false   // in functions onSelectRelationshipsClick, onEditObjectsClick
+  relationshipType: 'relationship' | 'sighting' | null = null   // in functions selectRelationship, selectSighting
+  sightingReference: string | null = null   // in function createSighting
+  sourceReference: string | null = null   // in functions onSourceReferenceChange, updateAvailableRelationships, createRelationship
+  targetReference: string | null = null   // in functions onSourceReferenceChange, updateAvailableRelationships, createRelationship
+  availableRelationships: string[] = []   // in functions updateAvailableRelationships, createRelationship
+  chosenRelationship: string | null = null    // in function createRelationship
+  relationshipsCreated: Array<{ type: 'relationship' | 'sighting', sourceDetail: any, relationship?: string, targetDetail: any }> = []    // in functions onEditObjectsClick, isDuplicateRelationship, createRelationship, createSighting, canContinue, getUnlinkedObjects, onContinueClick
+  jsonOutput: string = ''   // in functions onEditObjectsClick, onContinueClick
+  stixTotals: string = ''
+  stixBundle: any
+  viewBundle = false
 
   // Event handler for when a STIX object button is clicked from STIX Domain Objects (description-page, object-buttons-container)
   onObjectButtonClicked(ObjectButtonInfo: ObjectButtonInfo) {
     const { objectClass, objectName, clicked } = ObjectButtonInfo
     if (!objectClass || !objectName) return
-    const index = this.selectedStixObjects.findIndex(obj => obj.stixType === objectClass)
+    const index = this.selectedObjects.findIndex(obj => obj.stixType === objectClass)
 
     if (clicked) {
-      if (index === -1) {
-        this.selectedStixObjects.push({ stixType: objectClass, name: objectName, id: `${objectClass}--${this.generateUUID()}` })
-        this.totalFormsCount++
-      }
+      this.selectedObjects.push({ stixType: objectClass, name: objectName, id: `${objectClass}--${this.generateUUID()}` })
+      this.totalForms++
     } else {
-      if (index !== -1) {
-        this.selectedStixObjects.splice(index, 1)
-        this.objectBoxes.toArray().forEach(box => {
-          if (box.stixType === objectClass) {
-            this.totalFormsCount -= box.formDetails.length
-            box.formDetails = []
-          }
-        })
-      }
-    }
-  }
-
-  // Check if a particular STIX object is selected from STIX Domain Objects (description-page, object-buttons-container)
-  isStixObjectSelected(stixType: string): boolean {
-    return this.selectedStixObjects.some(obj => obj.stixType === stixType)
-  }
-
-  // Event handler for when the last form of a particular STIX type is removed
-  // The corresponding object button is unclicked and the object is removed from the selectedStixObjects list
-  onLastFormRemoved(stixType: string) {
-    const index = this.selectedStixObjects.findIndex(obj => obj.stixType === stixType)
-    if (index > -1) {
-      this.selectedStixObjects.splice(index, 1)
-      this.buttons.toArray().forEach(button => {
-        if (button.btnClass === stixType) {
-          button.isClicked = false
+      this.selectedObjects.splice(index, 1)
+      this.objectBoxes.toArray().forEach(box => {
+        if (box.stixType === objectClass) {
+          this.totalForms -= box.formDetails.length
+          box.formDetails = []
         }
       })
     }
   }
 
-  // Updates the total forms count when a form is added or deleted
-  updateTotalFormsCount(byAmount: number) {
-    this.totalFormsCount += byAmount
+  // Check if a particular STIX object is selected from STIX Domain Objects (description-page, object-buttons-container)
+  //* Necessary to display the object boxes when an object button is clicked
+  isObjectSelected(stixType: string): boolean {
+    return this.selectedObjects.some(obj => obj.stixType === stixType)
   }
 
-  onInput(event: any) {
-    const inputValue = parseFloat(event.target.value)
+  // Event handler for when the last form of a particular STIX type is removed
+  // The corresponding object button is unclicked and the object is removed from the selectedObjects list
+  onLastFormRemoved(stixType: string) {
+    const index = this.selectedObjects.findIndex(obj => obj.stixType === stixType)
+    this.selectedObjects.splice(index, 1)
+    this.buttons.toArray().forEach(button => {
+      if (button.btnClass === stixType) {
+        button.isClicked = false
+      }
+    })
+  }
 
-    if (isNaN(inputValue) || inputValue < 1) {
-      this.datasetAmount = null
-    } else if (inputValue > 100000) {
-      this.datasetAmount = 100000
-    } else {
-      this.datasetAmount = inputValue
-    }
+  // Updates the total forms count when a form is added or deleted
+  updateTotalFormsCount(byAmount: number) {
+    this.totalForms += byAmount
+  }
+
+  onDatasetInput(event: any) {
+    const inputValue = parseFloat(event.target.value)
+    const clamp = (num: number, min: number, max: number) => Math.min(Math.max(num, min), max);
+    const minval: number = 1
+    const maxval: number = 100000
+
+    this.datasetAmount = clamp(inputValue, minval, maxval)
+
     // Update the input value to match the datasetAmount
     event.target.value = this.datasetAmount
   }
@@ -112,14 +108,23 @@ export class AppComponent {
     return this.objectBoxes.toArray().every(box => box.areAllFormsValid())
   }
 
+  // This prevents the user from being able to select the same object for both source and target for relationships
+  onSourceReferenceChange() {
+    // Check if the selected values are the same
+    if (this.sourceReference === this.targetReference) {
+      // If they are the same, clear the "Target Reference"
+      this.targetReference = null
+      this.updateAvailableRelationships()
+    }
+  }
+
   // When the user tries to move on to the relationship selection phase, it ensures that all forms are complete and stores the data
-  onSelectRelationships() {
+  onSelectRelationshipsClick() {
     if (!this.areAllFormsComplete()) {
       alert("Please complete all required fields before selecting relationships.")
       return
     }
-
-    if (this.datasetAmount === null) {
+    if (this.datasetAmount === null || isNaN(this.datasetAmount)) {
       alert("Please enter a valid dataset amount before proceeding.")
       return
     }
@@ -127,45 +132,76 @@ export class AppComponent {
     this.isSelectingRelationships = true
 
     this.objectBoxes.toArray().forEach(box => {
+      var count: number = 0
       box.forms.toArray().forEach(form => {
-        const formData = form.formData
-        this.selectedStixObjectDetails.push({
+        const formData = form.getFormData()
+        this.createdStixObjects.push({
           boxName: box.boxName,
           title: form.formTitle,
           stixType: box.stixType,
-          id: this.generateUUID(),
-          formData: formData
+          id: box.formDetails[count].formID,
+          formData: formData,
         })
+        count += 1
       })
+    })
+
+    // Remove relationships with non-existent source_ref or target_ref
+    this.relationshipsCreated = this.relationshipsCreated.filter(rel => {
+      const sourceExists = this.createdStixObjects.find(obj => obj.id === rel.sourceDetail.id)
+      const targetExists = this.createdStixObjects.find(obj => obj.id === rel.targetDetail.id)
+
+      if (rel.type === "relationship") {
+        if (sourceExists && targetExists) {   // Update sourceDetail and targetDetail with new data, keep relationship
+          rel.sourceDetail = sourceExists
+          rel.targetDetail = targetExists
+          return true
+        }
+      } else if (rel.type === "sighting") {
+        if (sourceExists) {   // Update sourceDetail with new data, keep sighting
+          rel.sourceDetail = sourceExists
+          return true
+        }
+      } else {
+        return true   // Keep non-relationship/sighting objects
+      }
+      return false    // Remove relationships where id does not exist
     })
   }
 
+  // When the user clicks the Edit Objects button to go back to the first page
+  onEditObjectsClick() {
+    this.isSelectingRelationships = false
+    this.createdStixObjects = []
+    this.jsonOutput = ""
+  }
+
   // Toggles the visibility of selected object details during the relationship phase
-  toggleStixObjectDetailsVisibility(objectName: string) {
-    this.selectedStixObjectDetailsVisible[objectName] = !this.selectedStixObjectDetailsVisible[objectName]
+  toggleObjectDetailsVisibility(objectName: string) {
+    this.displayCreatedObjects[objectName] = !this.displayCreatedObjects[objectName]
   }
 
   // Retrieves details for a given box name
   getDetailsForBoxName(boxName: string): StixObjectDetail[] {
-    return this.selectedStixObjectDetails.filter(detail => detail.boxName === boxName)
+    return this.createdStixObjects.filter(detail => detail.boxName === boxName)
   }
 
   // Handle the event when selecting a relationship
   selectRelationship() {
-    this.selectedRelationshipType = 'relationship'
+    this.relationshipType = 'relationship'
     this.updateAvailableRelationships()
   }
 
   // Handle the event when selecting a sighting
   selectSighting() {
-    this.selectedRelationshipType = 'sighting'
+    this.relationshipType = 'sighting'
   }
 
   // Updates the available relationships based on selected source and target
   updateAvailableRelationships() {
     // Fetch the details for the selected source and target
-    const sourceDetails = this.selectedStixObjectDetails.find((detail: { title: string; }) => detail.title === this.selectedSourceReference)
-    const targetDetails = this.selectedStixObjectDetails.find((detail: { title: string; }) => detail.title === this.selectedTargetReference)
+    const sourceDetails = this.createdStixObjects.find((detail: { id: string; }) => detail.id === this.sourceReference)
+    const targetDetails = this.createdStixObjects.find((detail: { id: string; }) => detail.id === this.targetReference)
     let sourceStixType: string | null = null
     let targetStixType: string | null = null
 
@@ -185,18 +221,18 @@ export class AppComponent {
   }
 
   // Check for duplicate relationships
-  private isDuplicateRelationship(newRelationship: any): boolean {
+  isDuplicateRelationship(newRelationship: any): boolean {
     if (newRelationship.type === 'relationship') {
-      return this.createdRelationships.some(existingRelationship =>
+      return this.relationshipsCreated.some(existingRelationship =>
         existingRelationship.type === 'relationship' &&
-        existingRelationship.sourceDetail.title === newRelationship.sourceDetail.title &&
+        existingRelationship.sourceDetail.id === newRelationship.sourceDetail.id &&
         existingRelationship.relationship === newRelationship.relationship &&
-        existingRelationship.targetDetail.title === newRelationship.targetDetail.title
+        existingRelationship.targetDetail.id === newRelationship.targetDetail.id
       )
     } else if (newRelationship.type === 'sighting') {
-      return this.createdRelationships.some(existingRelationship =>
+      return this.relationshipsCreated.some(existingRelationship =>
         existingRelationship.type === 'sighting' &&
-        existingRelationship.sourceDetail.title === newRelationship.sourceDetail.title
+        existingRelationship.sourceDetail.id === newRelationship.sourceDetail.id
       )
     }
     return false
@@ -204,10 +240,10 @@ export class AppComponent {
 
   // Create a relationship
   createRelationship() {
-    const sourceDetail = this.selectedStixObjectDetails.find(detail => detail.title === this.selectedSourceReference)
-    const targetDetail = this.selectedStixObjectDetails.find(detail => detail.title === this.selectedTargetReference)
+    const sourceDetail = this.createdStixObjects.find(detail => detail.id === this.sourceReference)
+    const targetDetail = this.createdStixObjects.find(detail => detail.id === this.targetReference)
 
-    if (!sourceDetail || !this.selectedRelationship || !targetDetail) {
+    if (!sourceDetail || !this.chosenRelationship || !targetDetail) {
       alert("Please fill out all fields before creating a relationship.")
       return
     }
@@ -215,18 +251,19 @@ export class AppComponent {
     const newRelationship = {
       type: 'relationship' as const,
       sourceDetail: sourceDetail,
-      relationship: this.selectedRelationship,
+      relationship: this.chosenRelationship,
       targetDetail: targetDetail
     }
 
     if (!this.isDuplicateRelationship(newRelationship)) {
-      this.createdRelationships.push(newRelationship)
+      this.relationshipsCreated.push(newRelationship)
 
       // Clear the select fields
-      this.selectedSourceReference = null
-      this.selectedTargetReference = null
-      this.selectedRelationship = null
+      this.sourceReference = null
+      this.targetReference = null
+      this.chosenRelationship = null
       this.availableRelationships = []
+      this.jsonOutput = ""
     } else {
       alert("This relationship already exists.")
     }
@@ -234,7 +271,7 @@ export class AppComponent {
 
   // Create a sighting
   createSighting() {
-    const sightingDetail = this.selectedStixObjectDetails.find(detail => detail.title === this.selectedSightingReference)
+    const sightingDetail = this.createdStixObjects.find(detail => detail.id === this.sightingReference)
 
     if (!sightingDetail) {
       alert("Please fill out the sighting reference before creating a sighting.")
@@ -248,21 +285,30 @@ export class AppComponent {
     }
 
     if (!this.isDuplicateRelationship(newSighting)) {
-      this.createdRelationships.push(newSighting)
+      this.relationshipsCreated.push(newSighting)
 
       // Clear the select field
-      this.selectedSightingReference = null
+      this.sightingReference = null
+      this.jsonOutput = ""
     } else {
       alert("This sighting already exists.")
     }
   }
 
+  deleteRelationship(relationship: any) {
+    const index = this.relationshipsCreated.findIndex(rel => rel === relationship)
+    if (index !== -1) {
+      this.relationshipsCreated.splice(index, 1)
+      this.jsonOutput = ""
+    }
+  }
+
   // Check if user can continue to the next phase by ensuring that every selected STIX object has been linked in a relationship or sighting
   canContinue(): boolean {
-    for (let object of this.selectedStixObjects) {
+    for (let object of this.selectedObjects) {
       for (let detail of this.getDetailsForBoxName(object.name)) {
-        const isInRelationship = this.createdRelationships.some(relationship =>
-          (relationship.sourceDetail.title === detail.title || relationship.targetDetail.title === detail.title)
+        const isInRelationship = this.relationshipsCreated.some(relationship =>
+          (relationship.sourceDetail.id === detail.id || relationship.targetDetail.id === detail.id)
         )
 
         if (!isInRelationship) {
@@ -279,7 +325,7 @@ export class AppComponent {
     const linkedObjects = new Set<string>()
 
     // Populate with titles of objects that are present in the created relationships
-    for (const rel of this.createdRelationships) {
+    for (const rel of this.relationshipsCreated) {
       linkedObjects.add(rel.sourceDetail.title)
       if (rel.type === 'relationship') {
         linkedObjects.add(rel.targetDetail.title)
@@ -287,35 +333,13 @@ export class AppComponent {
     }
 
     // Returns a list of titles that aren't linked to a relationship or sighting
-    return this.selectedStixObjectDetails
+    return this.createdStixObjects
       .map(detail => detail.title)
       .filter(title => !linkedObjects.has(title))
   }
 
-  // Transforms relationship data to STIX format
-  transformToSTIX(relationship: any): any {
-    if (relationship.type === 'relationship') {
-      return {
-        id: 'relationship--' + this.generateUUID(),
-        type: 'relationship',
-        source_ref: relationship.sourceDetail.id,
-        relationship_type: relationship.relationship,
-        target_ref: relationship.targetDetail.id
-        // Add other necessary STIX fields
-      }
-    } else if (relationship.type === 'sighting') {
-      return {
-        id: 'sighting--' + this.generateUUID(),
-        type: 'sighting',
-        sighting_of_ref: relationship.sourceDetail.id,
-        // Add other necessary STIX fields
-      }
-    }
-    return {}
-  }
-
   // Transform STIX object details to STIX format
-  transformToObject(detail: StixObjectDetail): any {
+  transformObjectToStix(detail: StixObjectDetail): any {
     const nameField = detail.formData.find(fd => fd.key === "Name");
     const finalName = nameField?.value || detail.title;
     return {
@@ -323,7 +347,27 @@ export class AppComponent {
       id: detail.id,
       name: finalName,
       ...Object.fromEntries(detail.formData.map(fd => [fd.key, fd.value]))
-    };
+    }
+  }
+
+  // Transforms relationship data to STIX format
+  transformRelationshipToStix(relationship: any): any {
+    if (relationship.type === 'relationship') {
+      return {
+        id: 'relationship--' + this.generateUUID(),
+        type: 'relationship',
+        source_ref: relationship.sourceDetail.id,
+        relationship_type: relationship.relationship,
+        target_ref: relationship.targetDetail.id
+      }
+    } else if (relationship.type === 'sighting') {
+      return {
+        id: 'sighting--' + this.generateUUID(),
+        type: 'sighting',
+        sighting_of_ref: relationship.sourceDetail.id,
+      }
+    }
+    return {}
   }
 
   // Generates a random UUID (Universally Unique Identifier) - better way to do this later but this works for now
@@ -342,17 +386,16 @@ export class AppComponent {
   // Handles the continue button click event - ensures all STIX objects are in a relationship or sighting
   // If everything is in a relationship/sighting, compiles all STIX data into a single bundle and stringifies it into JSON format
   onContinueClick(): void {
-    const unlinkedObjects = this.getUnlinkedObjects()
-
     // If there are unlinked objects, alert the user to address them first
+    const unlinkedObjects = this.getUnlinkedObjects()
     if (unlinkedObjects.length) {
       alert('Please ensure all selected STIX objects are in a relationship or sighting: ' + unlinkedObjects.join(', '))
       return
     }
 
     // Convert each STIX object detail and created relationship to the STIX format
-    const stixObjects = this.selectedStixObjectDetails.map(detail => this.transformToObject(detail))
-    const stixRelationshipsAndSightings = this.createdRelationships.map(rel => this.transformToSTIX(rel))
+    const stixObjects = this.createdStixObjects.map(detail => this.transformObjectToStix(detail))
+    const stixRelationshipsAndSightings = this.relationshipsCreated.map(rel => this.transformRelationshipToStix(rel))
 
     //! Generate dataset #, objects, and relationships
     // Generate the objects array
@@ -384,33 +427,55 @@ export class AppComponent {
       relationships: relationshipsOutput
     }
 
-    this.stixOutput = JSON.stringify(finalOutput, null, 2)
+    this.jsonOutput = JSON.stringify(finalOutput, null, 2)
 
-    this.sendPostRequest(this.stixOutput).subscribe(
+    this.sendPostRequest(this.jsonOutput).subscribe(
       response => {
         console.log(response.message)
+        console.log(this.stixTotals)
+        this.stixTotals = response.stix_totals
+        this.stixBundle = response.bundle
       },
       error => {
         console.error("There was an error sending the request:", error)
-      })
+      }
+    )
+  }
 
-    //! The below code would display the STIX objects and relationships without creating a bundle
-    // // Convert each STIX object and relationship/sighting to its string representation
-    // const stixStrings = [...stixObjects, ...stixRelationshipsAndSightings].map(obj => JSON.stringify(obj, null, 2))
+  toggleViewBundle() {
+    this.viewBundle = !this.viewBundle
+  }
 
-    // // Join them together, separating by commas and newlines
-    // this.stixOutput = stixStrings.join(',\n')
+  copyToClipboard() {
+    navigator.clipboard.writeText(this.stixBundle).then(() => {
+      this.renderer.setProperty(this.el.nativeElement.querySelector('.copy-btn'), 'innerText', 'Copied!')
+      
+      setTimeout(() => {
+        this.renderer.setProperty(this.el.nativeElement.querySelector('.copy-btn'), 'innerText', 'Copy to Clipboard')
+      }, 3000)
+    }).catch((error) => {
+      console.error('Unable to copy to clipboard', error)
+      this.renderer.setProperty(this.el.nativeElement.querySelector('.copy-btn'), 'innerText', 'Please try again')
+      
+      setTimeout(() => {
+        this.renderer.setProperty(this.el.nativeElement.querySelector('.copy-btn'), 'innerText', 'Copy to Clipboard')
+      }, 3000)
+    })
+  }
 
-    //! The below code would create a STIX bundle
-    // // Create a STIX bundle containing all the formatted data.
-    // const stixData = [...stixObjects, ...stixRelationshipsAndSightings]
-    // const bundle = {
-    //   type: "bundle",
-    //   id: "bundle--" + this.generateUUID(),
-    //   spec_version: "2.1",
-    //   objects: stixData
-    // }
-    // // Stringify the bundle for JSON output
-    // this.stixOutput = JSON.stringify(bundle, null, 2)
+  // This allows the user to download the stixBundle as a json file
+  downloadStixBundle(): void {
+    if (this.stixBundle) {
+      const blob = new Blob([this.stixBundle], { type: 'application/json' })
+      const url = window.URL.createObjectURL(blob)
+  
+      const a = document.createElement('a')
+      a.href = url;
+      a.download = 'stix_bundle.json'
+      a.click()
+  
+      // Revoke the Object URL to free up resources
+      window.URL.revokeObjectURL(url)
+    }
   }
 }

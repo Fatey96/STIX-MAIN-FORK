@@ -12,9 +12,13 @@
         <app-object-form [class]="stixType" [formTitle]="stixType + '-' + (i + 1)">
             <ng-container *ngFor="let field of formFields">
                 <app-object-info 
+                    [inputType]="field.inputType" 
                     [stixProperty]="field.stixProperty" 
                     [propertyName]="field.propertyName" 
-                    [isRequired]="field.isRequired">
+                    [isRequired]="field.isRequired"
+                    [selectOptions]="field.selectOptions"
+                    [checkboxOptions]="field.checkboxOptions"
+                    [radioOptions]="field.radioOptions">
                 </app-object-info>
             </ng-container>
         </app-object-form>

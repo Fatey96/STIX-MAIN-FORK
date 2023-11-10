@@ -9,7 +9,7 @@ label {
     display: block;
     font-weight: 400;
     padding-left: 2px;
-    font-size: .9em;
+    font-size: 1em;
 }
 
 .requirement-indicator {
@@ -24,10 +24,65 @@ label {
     color: var(--accent-red);
 }
 
-input {
+.input-field, .select-field, .checkbox-container {
+    position: relative;
     background-color: transparent;
     border: 1px solid var(--text-main);
     border-radius: 3px;
     padding: 2px;
     width: 200px;
+    box-sizing: border-box;
+}
+
+.option-field {
+    background-color: var(--main-bg);
+}
+
+.checkbox-option-container {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    background-color: var(--main-bg);
+    border: 1px solid var(--text-main);
+    border-radius: 3px;
+    margin: 3px 0 0 -2px;
+}
+
+.checkbox-box {
+    accent-color: var(--accent-blue);
+    cursor: pointer;
+    height: 1em;
+    width: 1em;
+    margin: 4px;
+}
+
+.checkbox-option {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-option:hover {
+    background-color: var(--accent-blue);
+    color: var(--main-bg);
+}
+
+.checkbox-select {
+    position: relative;
+}
+
+.checkbox-select select {
+    width: 100%;
+    border: none;
+}
+
+.hide-dropdown {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.hidden {
+    display: none;
 }

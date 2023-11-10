@@ -16,17 +16,32 @@ export class ObjectFormComponent {
   }
 
   // Getter method that extracts form data from the HTML form and returns it
-  get formData() {
+  getFormData(): { key: string, value: any }[] {
     const formElement = this.form.nativeElement  // Access the raw HTML form element
-    const data: { key: string, value: any }[] = [];  // Array to hold the extracted form data
+    const data: { key: string, value: any }[] = []  // Array to hold the extracted form data
 
     // Loop through all form controls (like input, select, textarea) in the form
     Array.from(formElement.elements).forEach((element: any) => {
-        if (element.name) {
-            // Push each form control's name and value to the data array
-            data.push({ key: element.name, value: element.value })
+      if (element.id === 'empty-select') {    // Skip the empty-select in the checkbox one
+        return
+      }
+
+      if (element.type === 'checkbox') {
+        if (element.checked) {
+          const existingData = data.find(item => item.key === element.id)   // Used to see if an option has been checked and added or not
+          if (existingData) {
+            existingData.value.push(element.value)
+          } else {
+            data.push({ key: element.id, value: [element.value] })
+          }
         }
+      } else {
+        if (element.value.trim() !== '') {
+          data.push({ key: element.id, value: element.value })
+        }
+      }
     })
+
     return data  // Return the extracted form data
   }
 }
