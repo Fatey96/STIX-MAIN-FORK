@@ -13,4 +13,20 @@ export class ObjectInfoComponent {
   @Input() selectOptions: string[] = []
   @Input() checkboxOptions: string[] = []
   @Input() radioOptions: string[] = []
+  isCheckboxAreaExpanded = false
+  selectedCheckboxOptions: string[] = []  
+
+  // Allows for the opening/closing of the checkboxes dropdown
+  toggleCheckboxArea() {
+    this.isCheckboxAreaExpanded = !this.isCheckboxAreaExpanded
+  }
+
+  // Updates the _ selected text in the checkbox selects
+  updateSelectedOptions(option: string) {
+    if (this.selectedCheckboxOptions.includes(option)) {
+      this.selectedCheckboxOptions = this.selectedCheckboxOptions.filter((item) => item !== option)
+    } else {
+      this.selectedCheckboxOptions.push(option)
+    }
+  }
 }

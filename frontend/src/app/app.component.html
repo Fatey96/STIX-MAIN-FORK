@@ -23,7 +23,6 @@
       { inputType: 'select', stixProperty: 'exampleSelect', propertyName: 'Example Select', isRequired: false, selectOptions: ['Option 1', 'Option 2', 'Option 3'] }
       { inputType: 'checkbox', stixProperty: 'exampleCheckbox', propertyName: 'Example Checkbox', isRequired: false, checkboxOptions: ['Option 1', 'Option 2', 'Option 3'] }
       { inputType: 'timestamp', stixProperty: 'exampleTimestamp', propertyName: 'Example Timestamp', isRequired: false }
-      { inputType: 'radio', stixProperty: 'exampleRadio', propertyName: 'Example Radio', isRequired: false, radioOptions: ['Option 1', 'Option 2'] }
     -->
     <ng-container *ngFor="let box of [
         {name: 'Identity', type: 'identity', fields: [
@@ -31,14 +30,14 @@
           { inputType: 'text', stixProperty: 'description', propertyName: 'Description', isRequired: false }, 
           { inputType: 'text', stixProperty: 'contact_information', propertyName: 'Contact Information', isRequired: false },
           { inputType: 'checkbox', stixProperty: 'roles', propertyName: 'Roles', isRequired: false, checkboxOptions: ['CEO', 'Domain Administrator', 'Doctor', 'Hospital', 'Retailer'] },
-          { inputType: 'radio', stixProperty: 'identity_class', propertyName: 'Identity Class', isRequired: false, radioOptions: ['individual', 'group', 'system', 'organization', 'class', 'unknown'] },
+          { inputType: 'select', stixProperty: 'identity_class', propertyName: 'Identity Class', isRequired: false, selectOptions: ['individual', 'group', 'system', 'organization', 'class', 'unknown'] },
           { inputType: 'checkbox', stixProperty: 'sectors', propertyName: 'Sectors', isRequired: false, checkboxOptions: ['agriculture', 'education', 'government', 'healthcare', 'infrastructure', 'utilities'] }
-          ]}, 
+        ]}, 
         {name: 'Malware', type: 'malware', fields: [
           { inputType: 'text', stixProperty: 'name', propertyName: 'Name', isRequired: false }, 
           { inputType: 'text', stixProperty: 'description', propertyName: 'Description', isRequired: false },
           { inputType: 'checkbox', stixProperty: 'malware_types', propertyName: 'Malware Types', isRequired: false, checkboxOptions: ['ddos', 'ransomware', 'trojan', 'unknown', 'virus'] },
-          { inputType: 'radio', stixProperty: 'is_family', propertyName: 'Malware Family', isRequired: true, radioOptions: ['Yes', 'No'] },
+          { inputType: 'select', stixProperty: 'is_family', propertyName: 'Malware Family', isRequired: true, selectOptions: ['Yes', 'No'] },
           { inputType: 'timestamp', stixProperty: 'first_seen', propertyName: 'First Seen', isRequired: false },
           { inputType: 'timestamp', stixProperty: 'last_seen', propertyName: 'Last Seen', isRequired: false }
         ]}, 
@@ -54,7 +53,7 @@
           { inputType: 'select', stixProperty: 'primary_motivation', propertyName: 'Primary Motivation', isRequired: false, selectOptions: ['accidental', 'coercion', 'organizational-gain', 'personal-gain', 'personal-satisfaction', 'revenge'] },
           { inputType: 'checkbox', stixProperty: 'secondary_motivations', propertyName: 'Secondary Motivations', isRequired: false, checkboxOptions: ['accidental', 'coercion', 'organizational-gain', 'personal-gain', 'personal-satisfaction', 'revenge'] },
           { inputType: 'checkbox', stixProperty: 'personal_motivations', propertyName: 'Personal Motivations', isRequired: false, checkboxOptions: ['accidental', 'coercion', 'organizational-gain', 'personal-gain', 'personal-satisfaction', 'revenge'] }
-        ]}
+        ]} 
       ]">
       <app-object-box [boxName]="box.name" [stixType]="box.type" *ngIf="isObjectSelected(box.type)"
         (lastFormDeleted)="onLastFormRemoved($event)" (formAdded)="updateTotalFormsCount(1)"

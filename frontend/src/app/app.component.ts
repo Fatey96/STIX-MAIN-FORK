@@ -294,6 +294,7 @@ export class AppComponent {
     const index = this.relationshipsCreated.findIndex(rel => rel === relationship)
     if (index !== -1) {
       this.relationshipsCreated.splice(index, 1)
+      this.jsonOutput = ""
     }
   }
 
