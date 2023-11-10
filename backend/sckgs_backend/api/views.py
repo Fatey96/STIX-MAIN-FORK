@@ -5,6 +5,8 @@ from django.views.decorators.csrf import csrf_exempt
 from builders.stix_builder_factory import StixBuilderFactory
 from builders.relationship_builder import RelationshipBuilder
 from stix2 import Bundle
+from itertools import cycle
+import pyperclip
 
 # Create your views here.
 @csrf_exempt
@@ -12,27 +14,57 @@ def add_stix_data(request):
     if request.method == 'POST':
         # Parse the incoming JSON data
         data = json.loads(request.body)
-        
-        # Do something with the data
-        # For now, we'll just print it
-        stix_dict = {index: [] for index in range(len(data['objects']))}
-        for _ in range(data['dataset']):
-            for index, object in enumerate(data['objects']):
-                stix_dict[index].append(StixBuilderFactory.create(object['type'],object['name']))
+        dataset_size = data['dataset']
+        stix_objects = data['objects']
+        relationships = data['relationships']
+
+        proportions = {
+            "identity": 0.25,
+            "threat-actor": 0.10,
+            "malware": 0.15,
+            "campaign": 0.10,
+            "location": 0.15
+        }
+
+        stix_dict = {index: [] for index in range(len(stix_objects))}
+        total_created = 0
+        stix_totals = {}
+        for stix in stix_objects:
+            proportion = proportions[stix['type']]
+            count = int(dataset_size * proportion)
+
+            stix_totals[stix['type']] = count
+            total_created += count
+            if stix['type'] in  stix_totals:
+                stix_totals[stix['type']] += count
+            else:
+                stix_totals[stix['type']] = count
+
+            for _ in range(count):
+                stix_dict[stix_objects.index(stix)].append(StixBuilderFactory.create(stix['type'], stix['name']))
 
         relationship_list = []
-        for relationship in (data['relationships']):
-            for index in range(len(stix_dict[relationship['source']])):
-                source = stix_dict[relationship['source']][index]
-                target = stix_dict[relationship['target']][index]
-                relationship_list.append(RelationshipBuilder(source, target, relationship['relationship']).create())
+        for relationship in (relationships):
+            source_list = stix_dict[relationship['source']]
+            target_list = stix_dict[relationship['target']]
+            cycle_source = cycle(source_list)
+            cycle_target = cycle(target_list)
+
+            for _ in range(max(len(source_list), len(target_list))):
+                relationship_list.append(RelationshipBuilder(next(cycle_source), next(cycle_target), relationship['relationship']).create())
 
         stix_list = []
         for sublist in stix_dict.values():
             stix_list.extend(item for item in sublist if item is not None)
 
+        # dictionary of stix totals
+        print(stix_totals)
+        # total of created stix objects
+        print("Total created: "+ str(total_created))
+        # completed bundle
         bundle = Bundle(stix_list, relationship_list)
-        print(bundle.serialize(pretty=True))
+        # copies to clip board for testing
+        pyperclip.copy(bundle.serialize(pretty=True))
 
         return JsonResponse({"message": "Data received."})
     else:
