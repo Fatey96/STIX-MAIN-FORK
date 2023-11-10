@@ -196,9 +196,9 @@
     <button class="continue" *ngIf="relationshipsCreated.length > 0" (click)="onContinueClick()">Continue</button>
 
     <div *ngIf="jsonOutput">
-      <div class="amount-output">
+      <div class="objects-created">
         <h2>Objects Created:</h2>
-        <div>
+        <div class="objects-amount">
           <div *ngFor="let object of stixTotals | keyvalue" class="object-line">
             <h3>{{ object.key }}:</h3>
             <span class="object-values">{{ object.value }}</span>

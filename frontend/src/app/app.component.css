@@ -95,16 +95,21 @@ ul, li {    /* In stix-object-column, object-details-container, displays user in
     padding-bottom: 1em;
 }
 
-.amount-output {
+.objects-created {
     margin: 1em auto;
     padding: 1em;
     height: fit-content;
     border: 2px solid var(--accent-gray);
     border-radius: 5px;
     max-width: 500px;
-    display: flex;
+}
+
+.objects-amount {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     justify-content: center;
-    gap: 1.5em;
+    gap: 1em;
+    padding-top: .5em;
 }
 
 .bundle-output {
@@ -266,18 +271,6 @@ ul, li {    /* In stix-object-column, object-details-container, displays user in
 .object-line {
     display: flex;
     gap: .5em;
-    border-bottom: 1px solid var(--accent-gray);
-    padding-bottom: .5em;
-    padding-top: .5em;
-}
-
-.object-line:first-of-type {
-    padding-top: 0em;
-}
-
-.object-line:last-of-type {
-    border-bottom: none;
-    padding-bottom: 0em;
 }
 
 .object-values {
