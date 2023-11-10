@@ -95,12 +95,25 @@ ul, li {    /* In stix-object-column, object-details-container, displays user in
     padding-bottom: 1em;
 }
 
-.stix-output {
+.amount-output {
     margin: 1em auto;
     padding: 1em;
     height: fit-content;
     border: 2px solid var(--accent-gray);
     border-radius: 5px;
+    max-width: 500px;
+    display: flex;
+    justify-content: center;
+    gap: 1.5em;
+}
+
+.bundle-output {
+    margin: 1em auto;
+    padding: 1em;
+    height: fit-content;
+    border: 2px solid var(--accent-gray);
+    border-radius: 5px;
+    max-width: 500px;
 }
 
 .dataset-container {
@@ -159,11 +172,11 @@ ul, li {    /* In stix-object-column, object-details-container, displays user in
     font-weight: 500;
 }
 
-.edit-btn:hover {
+.edit-btn:hover, .bundle-btn:hover {
     border: 4px solid var(--accent-teal);
 }
 
-.create-btn {   /* relationship-page, if-relationship/if-sighting, button to confirm the creation of relationship or sighting */
+.create-btn, .view-btn {   /* relationship-page, if-relationship/if-sighting, button to confirm the creation of relationship or sighting */
     display: block;
     margin: auto;
     cursor: pointer;
@@ -177,6 +190,33 @@ ul, li {    /* In stix-object-column, object-details-container, displays user in
     color: var(--main-bg);
     font-size: 1em;
     margin-top: .75em;
+}
+
+.view-btn {
+    max-width: 200px;
+}
+
+.bundle-btn {
+    display: block;
+    cursor: pointer;
+    padding: .4em;
+    width: 100%;
+    text-align: center;
+    text-wrap: nowrap;
+    background-color: transparent;
+    color: var(--text-main);
+    font-size: 1em;
+    margin-top: .75em;
+    border: 2px solid var(--accent-blue);
+    border-radius: 5px;
+    font-weight: 500;
+}
+
+.bundle-btn-container {
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+    padding-bottom: 1em;
 }
 
 .relationship-label, .relationship-select {   
@@ -221,4 +261,32 @@ ul, li {    /* In stix-object-column, object-details-container, displays user in
     border: 2px solid var(--accent-gray);
     border-radius: 2px;
     background-color: transparent;
+}
+
+.object-line {
+    display: flex;
+    gap: .5em;
+    border-bottom: 1px solid var(--accent-gray);
+    padding-bottom: .5em;
+    padding-top: .5em;
+}
+
+.object-line:first-of-type {
+    padding-top: 0em;
+}
+
+.object-line:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0em;
+}
+
+.object-values {
+    margin: 0;
+    padding: 0;
+    font-size: 1.25em;
+    font-weight: 400;
+}
+
+.hidden {
+    display: none;
 }

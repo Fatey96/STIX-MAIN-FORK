@@ -1,4 +1,4 @@
-import { Component, ViewChildren, QueryList } from '@angular/core';
+import { Component, ViewChildren, QueryList, Renderer2, ElementRef } from '@angular/core';
 import { ObjectBtnComponent } from './object-btn/object-btn.component';
 import { ObjectBoxComponent } from './object-box/object-box.component';
 import { RelationshipService } from './relationship.service';
@@ -27,7 +27,7 @@ interface StixObjectDetail {  // In createdStixObjects array, function getDetail
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  constructor(private relationshipService: RelationshipService, private http: HttpClient) { }
+  constructor(private relationshipService: RelationshipService, private http: HttpClient, private renderer: Renderer2, private el: ElementRef) { }
   @ViewChildren(ObjectBtnComponent) buttons!: QueryList<ObjectBtnComponent>   // in function onLastFormRemoved
   @ViewChildren(ObjectBoxComponent) objectBoxes!: QueryList<ObjectBoxComponent>   // in functions onObjectButtonClicked, areAllFormsComplete, onSelectRelationshipsClick
   selectedObjects: { stixType: string; name: string; id: string; }[] = []   // in functions onObjectButtonClicked, isObjectSelected, onLastFormRemoved, canContinue
@@ -44,6 +44,9 @@ export class AppComponent {
   chosenRelationship: string | null = null    // in function createRelationship
   relationshipsCreated: Array<{ type: 'relationship' | 'sighting', sourceDetail: any, relationship?: string, targetDetail: any }> = []    // in functions onEditObjectsClick, isDuplicateRelationship, createRelationship, createSighting, canContinue, getUnlinkedObjects, onContinueClick
   jsonOutput: string = ''   // in functions onEditObjectsClick, onContinueClick
+  stixTotals: string = ''
+  stixBundle: any
+  viewBundle = false
 
   // Event handler for when a STIX object button is clicked from STIX Domain Objects (description-page, object-buttons-container)
   onObjectButtonClicked(ObjectButtonInfo: ObjectButtonInfo) {
@@ -260,6 +263,7 @@ export class AppComponent {
       this.targetReference = null
       this.chosenRelationship = null
       this.availableRelationships = []
+      this.jsonOutput = ""
     } else {
       alert("This relationship already exists.")
     }
@@ -285,6 +289,7 @@ export class AppComponent {
 
       // Clear the select field
       this.sightingReference = null
+      this.jsonOutput = ""
     } else {
       alert("This sighting already exists.")
     }
@@ -381,9 +386,8 @@ export class AppComponent {
   // Handles the continue button click event - ensures all STIX objects are in a relationship or sighting
   // If everything is in a relationship/sighting, compiles all STIX data into a single bundle and stringifies it into JSON format
   onContinueClick(): void {
-    const unlinkedObjects = this.getUnlinkedObjects()
-
     // If there are unlinked objects, alert the user to address them first
+    const unlinkedObjects = this.getUnlinkedObjects()
     if (unlinkedObjects.length) {
       alert('Please ensure all selected STIX objects are in a relationship or sighting: ' + unlinkedObjects.join(', '))
       return
@@ -428,29 +432,50 @@ export class AppComponent {
     this.sendPostRequest(this.jsonOutput).subscribe(
       response => {
         console.log(response.message)
+        console.log(this.stixTotals)
+        this.stixTotals = response.stix_totals
+        this.stixBundle = response.bundle
       },
       error => {
         console.error("There was an error sending the request:", error)
       }
     )
+  }
 
-    //! The below code would display the STIX objects and relationships without creating a bundle
-    // // Convert each STIX object and relationship/sighting to its string representation
-    // const stixStrings = [...stixObjects, ...stixRelationshipsAndSightings].map(obj => JSON.stringify(obj, null, 2))
+  toggleViewBundle() {
+    this.viewBundle = !this.viewBundle
+  }
 
-    // // Join them together, separating by commas and newlines
-    // this.jsonOutput = stixStrings.join(',\n')
+  copyToClipboard() {
+    navigator.clipboard.writeText(this.stixBundle).then(() => {
+      this.renderer.setProperty(this.el.nativeElement.querySelector('.copy-btn'), 'innerText', 'Copied!')
+      
+      setTimeout(() => {
+        this.renderer.setProperty(this.el.nativeElement.querySelector('.copy-btn'), 'innerText', 'Copy to Clipboard')
+      }, 3000)
+    }).catch((error) => {
+      console.error('Unable to copy to clipboard', error)
+      this.renderer.setProperty(this.el.nativeElement.querySelector('.copy-btn'), 'innerText', 'Please try again')
+      
+      setTimeout(() => {
+        this.renderer.setProperty(this.el.nativeElement.querySelector('.copy-btn'), 'innerText', 'Copy to Clipboard')
+      }, 3000)
+    })
+  }
 
-    //! The below code would create a STIX bundle
-    // // Create a STIX bundle containing all the formatted data.
-    // const stixData = [...stixObjects, ...stixRelationshipsAndSightings]
-    // const bundle = {
-    //   type: "bundle",
-    //   id: "bundle--" + this.generateUUID(),
-    //   spec_version: "2.1",
-    //   objects: stixData
-    // }
-    // // Stringify the bundle for JSON output
-    // this.jsonOutput = JSON.stringify(bundle, null, 2)
+  // This allows the user to download the stixBundle as a json file
+  downloadStixBundle(): void {
+    if (this.stixBundle) {
+      const blob = new Blob([this.stixBundle], { type: 'application/json' })
+      const url = window.URL.createObjectURL(blob)
+  
+      const a = document.createElement('a')
+      a.href = url;
+      a.download = 'stix_bundle.json'
+      a.click()
+  
+      // Revoke the Object URL to free up resources
+      window.URL.revokeObjectURL(url)
+    }
   }
 }

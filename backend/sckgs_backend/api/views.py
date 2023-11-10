@@ -66,6 +66,6 @@ def add_stix_data(request):
         # copies to clip board for testing
         pyperclip.copy(bundle.serialize(pretty=True))
 
-        return JsonResponse({"message": "Data received."})
+        return JsonResponse({"message": "Data received.", "stix_totals": stix_totals, "bundle": bundle.serialize(pretty=True)})
     else:
         return JsonResponse({"message": "Only POST requests are allowed."}, status=400)

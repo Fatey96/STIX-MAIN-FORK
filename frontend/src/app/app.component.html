@@ -195,8 +195,24 @@
 
     <button class="continue" *ngIf="relationshipsCreated.length > 0" (click)="onContinueClick()">Continue</button>
 
-    <div *ngIf="jsonOutput" class="stix-output">
-      <pre>{{ jsonOutput }}</pre>
+    <div *ngIf="jsonOutput">
+      <div class="amount-output">
+        <h2>Objects Created:</h2>
+        <div>
+          <div *ngFor="let object of stixTotals | keyvalue" class="object-line">
+            <h3>{{ object.key }}:</h3>
+            <span class="object-values">{{ object.value }}</span>
+          </div>
+        </div>
+      </div>
+      <button class="view-btn" (click)="toggleViewBundle()">{{ viewBundle ? 'Hide STIX Bundle' : 'View STIX Bundle' }}</button>
+      <div class="bundle-output" [ngClass]="{ 'hidden': !viewBundle }">
+        <div class="bundle-btn-container">
+          <button class="bundle-btn copy-btn" (click)="copyToClipboard()">Copy to Clipboard</button>
+          <button class="bundle-btn" (click)="downloadStixBundle()">Download STIX Bundle</button>
+        </div>
+        <pre>{{ stixBundle }}</pre>
+      </div>
     </div>
   </div>
 
