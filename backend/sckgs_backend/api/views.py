@@ -2,8 +2,8 @@ from django.shortcuts import render
 import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from builders.stix_builder_factory import StixBuilderFactory
-from builders.relationship_builder import RelationshipBuilder
+from services.stix_builder_factory import StixBuilderFactory
+from services.relationship_builder import RelationshipBuilder
 from stix2 import Bundle
 from itertools import cycle
 import pyperclip
@@ -41,7 +41,7 @@ def add_stix_data(request):
                 stix_totals[stix['type']] = count
 
             for _ in range(count):
-                stix_dict[stix_objects.index(stix)].append(StixBuilderFactory.create(stix['type'], stix['name']))
+                stix_dict[stix_objects.index(stix)].append(StixBuilderFactory.create(stix['object']))
 
         relationship_list = []
         for relationship in (relationships):
