@@ -9,14 +9,11 @@ class TestRequest(TestCase):
             "objects": [
                 {
                     "type": "identity",
-                    "name": "Bad Guys R Us",
-                    "identity_class": "individual",
-                    "options": []
+                    "name": "Bad Guys R Us"
                 },
                 {
                     "type": "identity",
-                    "name": "AmbuCare Inc",
-                    "options": []
+                    "name": "AmbuCare Inc"
                 },
                 {
                     "type": "threat-actor",

@@ -9,58 +9,42 @@ class StixBuilderFactory:
     def create(stix):
         match stix['type']:
             case 'attack-pattern':
-                # required: name
-                return attack_pattern_builder.AttackPatternBuilder()
+                return attack_pattern_builder.AttackPatternBuilder(stix['object']).create()
             case 'campaign':
-                # required: name
-                return campaign_builder.CampaignBuilder()
+                return campaign_builder.CampaignBuilder(stix['object']).create()
             case 'course-of-action':
-                # required: name
-                return course_of_action_builder.CourseOfActionBuilder()
+                return course_of_action_builder.CourseOfActionBuilder(stix['object']).create()
             case 'grouping':
-                # required: context, object_refs
-                return grouping_builder.GroupingBuilder()
+                return grouping_builder.GroupingBuilder(stix['object']).create()
             case 'identity':
-                return identity_builder.IdentityBuilder(stix['name'], stix['identity_class'], stix['options']).create()
+                return identity_builder.IdentityBuilder(stix['object']).create()
             case 'incident':
-                # required: name
-                return incident_builder.IncidentBuilder()
+                return incident_builder.IncidentBuilder(stix['object']).create()
             case 'indicator':
-                # required: pattern, pattern_type, valid_from
-                return indicator_builder.IndicatorBuilder()
+                return indicator_builder.IndicatorBuilder(stix['object']).create()
             case 'infrastructure':
-                # required: name
-                return infrastructure_builder.InfrastructureBuilder()
+                return infrastructure_builder.InfrastructureBuilder(stix['object']).create()
             case 'intrusion-set':
-                # required: name
-                return intrusion_set_builder.IntrusionSetBuilder()
+                return intrusion_set_builder.IntrusionSetBuilder(stix['object']).create()
             case 'location':
-                # Must be provided at least one: region, country, latitude and longitude
-                return location_builder.LocationBuilder(stix['name']).create()
+                return location_builder.LocationBuilder(stix['object']).create()
             case 'malware':
-                return malware_builder.MalwareBuilder(stix['is-family'], stix['options']).create()
+                return malware_builder.MalwareBuilder(stix['object']).create()
             case 'malware-analysis':
-                # required: product
-                return malware_analysis_builder.MalwareAnalysisBuilder()
+                return malware_analysis_builder.MalwareAnalysisBuilder(stix['object']).create()
             case 'note':
-                # required: content, object_refs
-                return note_builder.NoteBuilder()
+                return note_builder.NoteBuilder(stix['object']).create()
             case 'observed-data':
-                # required: first_observed, last_observed, number_observed
-                return observed_data_builder.ObservedDataBuilder()
+                return observed_data_builder.ObservedDataBuilder(stix['object']).create()
             case 'opinion':
-                # required: opinion, object_refs
-                return opinion_builder.OpinionBuilder()
+                return opinion_builder.OpinionBuilder(stix['object']).create()
             case 'report':
-                # required: name, published, object_refs
-                return report_builder.ReportBuilder()
+                return report_builder.ReportBuilder(stix['object']).create()
             case 'threat-actor':
-                return threat_actor_builder.ThreatActorBuilder(stix['name'], stix['options']).create()
+                return threat_actor_builder.ThreatActorBuilder(stix['object']).create()
             case 'tool':
-                # required: name
-                return tool_builder.ToolBuilder()
+                return tool_builder.ToolBuilder(stix['object']).create()
             case 'vulnerability':
-                # required: name
-                return vulnerability_builder.VulnerabilityBuilder()
+                return vulnerability_builder.VulnerabilityBuilder(stix['object']).create()
             case _:
                 print("No match found")
