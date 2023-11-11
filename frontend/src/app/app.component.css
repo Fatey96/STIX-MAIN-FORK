@@ -2,7 +2,7 @@
 /* Global Styles */
 /*****************/
 .content {
-    width: 70%;
+    width: 80%;
     margin: auto;
 }
 
@@ -17,7 +17,7 @@ h1 {    /* Toolbar */
 
 h2 {    /* Large Titles */
     text-align: center;
-    font-size: 1.5em;
+    font-size: 1.35em;
     font-weight: 600;
 }
 
@@ -62,7 +62,7 @@ ul, li {    /* In stix-object-column, object-details-container, displays user in
     width: 100%;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1em;
+    gap: .5em;
 }
 
 .stix-object-column, .stix-relationship-column, .if-relationship, .if-sighting {    /* these are the previously mentioned columns */
@@ -74,27 +74,55 @@ ul, li {    /* In stix-object-column, object-details-container, displays user in
     margin-left: 1em;
 }
 
+.selected-relationships-column {
+    width: 85%;
+    display: flex;
+    border-top: 1px solid var(--accent-gray);
+    padding-top: 1em;
+    margin: 1em auto;
+}
+
 .selected-relationships-container {     /* relationship-page, holds the data for the created relationships */
-    width: 75%;
-    margin: auto;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1em;
+    gap: .5em;
+    width: 90%;
+    margin: auto;
+}
+
+.selected-relationships-column:last-of-type {
     border-bottom: 1px solid var(--accent-gray);
-    margin-bottom: 1em;
     padding-bottom: 1em;
 }
 
-.selected-relationships-container:last-of-type {
-    border-bottom: none;
-}
-
-.stix-output {
+.objects-created {
     margin: 1em auto;
     padding: 1em;
     height: fit-content;
     border: 2px solid var(--accent-gray);
     border-radius: 5px;
+    max-width: 500px;
+}
+
+.objects-amount {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: center;
+    gap: 1em;
+    padding-top: .5em;
+}
+
+.bundle-output {
+    margin: 1em auto;
+    padding: 1em;
+    height: fit-content;
+    border: 2px solid var(--accent-gray);
+    border-radius: 5px;
+    max-width: 500px;
+}
+
+.dataset-container {
+    padding-bottom: 1em;
 }
 
 /**********************/
@@ -128,7 +156,7 @@ ul, li {    /* In stix-object-column, object-details-container, displays user in
     border: 4px solid var(--accent-teal);
 }
 
-.object-title-buttons {     /* relationship-page, stix-object-column, allows the user to view their objects under each category */
+.object-title-buttons, .edit-btn {     /* relationship-page, stix-object-column, allows the user to view their objects under each category */
     display: block;
     margin: auto;
     cursor: pointer;
@@ -144,7 +172,16 @@ ul, li {    /* In stix-object-column, object-details-container, displays user in
     margin-top: .75em;
 }
 
-.create-btn {   /* relationship-page, if-relationship/if-sighting, button to confirm the creation of relationship or sighting */
+.edit-btn {
+    border: 2px solid var(--accent-blue);
+    font-weight: 500;
+}
+
+.edit-btn:hover, .bundle-btn:hover {
+    border: 4px solid var(--accent-teal);
+}
+
+.create-btn, .view-btn {   /* relationship-page, if-relationship/if-sighting, button to confirm the creation of relationship or sighting */
     display: block;
     margin: auto;
     cursor: pointer;
@@ -160,7 +197,34 @@ ul, li {    /* In stix-object-column, object-details-container, displays user in
     margin-top: .75em;
 }
 
-.relationship-label, select {   
+.view-btn {
+    max-width: 200px;
+}
+
+.bundle-btn {
+    display: block;
+    cursor: pointer;
+    padding: .4em;
+    width: 100%;
+    text-align: center;
+    text-wrap: nowrap;
+    background-color: transparent;
+    color: var(--text-main);
+    font-size: 1em;
+    margin-top: .75em;
+    border: 2px solid var(--accent-blue);
+    border-radius: 5px;
+    font-weight: 500;
+}
+
+.bundle-btn-container {
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+    padding-bottom: 1em;
+}
+
+.relationship-label, .relationship-select {   
     display: block;
     margin: auto;
     cursor: pointer;
@@ -176,10 +240,19 @@ ul, li {    /* In stix-object-column, object-details-container, displays user in
     margin-top: .75em;
 }
 
-select, option {    /* relationship-page, if-relationship/if-sighting, user picks their options for creating a relationship */
+.relationship-select, .relationship-option {    /* relationship-page, if-relationship/if-sighting, user picks their options for creating a relationship */
     background-color: var(--main-bg);
     margin-top: 0;
     margin-bottom: 1em;
+}
+
+.delete-btn {       /* relationship-page, selected-relationships-container, user can delete a created relationship */
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    text-decoration: underline;
+    color: var(--accent-red);
+    justify-content: flex-start;
 }
 
 /***********************/
@@ -189,12 +262,24 @@ select, option {    /* relationship-page, if-relationship/if-sighting, user pick
     font-weight: 500;
 }
 
-.dataset-container {
-    padding-bottom: 1em;
-}
-
 .dataset-input {
     border: 2px solid var(--accent-gray);
     border-radius: 2px;
     background-color: transparent;
+}
+
+.object-line {
+    display: flex;
+    gap: .5em;
+}
+
+.object-values {
+    margin: 0;
+    padding: 0;
+    font-size: 1.25em;
+    font-weight: 400;
+}
+
+.hidden {
+    display: none;
 }
