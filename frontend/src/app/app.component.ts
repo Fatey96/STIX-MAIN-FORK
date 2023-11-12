@@ -449,14 +449,14 @@ export class AppComponent {
   copyToClipboard() {
     navigator.clipboard.writeText(this.stixBundle).then(() => {
       this.renderer.setProperty(this.el.nativeElement.querySelector('.copy-btn'), 'innerText', 'Copied!')
-      
+
       setTimeout(() => {
         this.renderer.setProperty(this.el.nativeElement.querySelector('.copy-btn'), 'innerText', 'Copy to Clipboard')
       }, 3000)
     }).catch((error) => {
       console.error('Unable to copy to clipboard', error)
       this.renderer.setProperty(this.el.nativeElement.querySelector('.copy-btn'), 'innerText', 'Please try again')
-      
+
       setTimeout(() => {
         this.renderer.setProperty(this.el.nativeElement.querySelector('.copy-btn'), 'innerText', 'Copy to Clipboard')
       }, 3000)
@@ -468,12 +468,12 @@ export class AppComponent {
     if (this.stixBundle) {
       const blob = new Blob([this.stixBundle], { type: 'application/json' })
       const url = window.URL.createObjectURL(blob)
-  
+
       const a = document.createElement('a')
       a.href = url;
       a.download = 'stix_bundle.json'
       a.click()
-  
+
       // Revoke the Object URL to free up resources
       window.URL.revokeObjectURL(url)
     }
