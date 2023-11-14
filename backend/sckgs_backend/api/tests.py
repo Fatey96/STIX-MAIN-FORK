@@ -5,7 +5,7 @@ import json
 class TestRequest(TestCase):
     def test_json_data(self):
         json_data = {
-            "dataset": 100,
+            "dataset": 30,
             "objects": [
                 {
                     "type": "identity",
@@ -21,19 +21,7 @@ class TestRequest(TestCase):
                 },
                 {
                     "type": "malware",
-                    "name": "stuxnet"
-                },
-                {
-                    "type": "campaign",
-                    "name": "Operation AttackEmergVehicles"
-                },
-                {
-                    "type": "location",
-                    "name": "Marilliv"
-                },
-                {
-                    "type": "location",
-                    "name": "Timeville"
+                    "is_family": "false"
                 }
             ],
             "relationships": [
@@ -43,39 +31,14 @@ class TestRequest(TestCase):
                     "relationship": "attributed-to"
                 },
                 {
-                    "source": 4,
-                    "target": 0,
-                    "relationship": "attributed-to"
-                },
-                {
-                    "source": 4,
-                    "target": 3,
-                    "relationship": "uses"
-                },
-                 {
-                    "source": 2,
-                    "target": 3,
-                    "relationship": "uses"
-                },
-                {
-                    "source": 1,
-                    "target": 5,
-                    "relationship": "located-at"
-                },
-                {
-                    "source": 2,
-                    "target": 6,
-                    "relationship": "located-at"
-                },
-                {
                     "source": 2,
                     "target": 1,
                     "relationship": "targets"
                 },
                 {
-                    "source": 4,
-                    "target": 1,
-                    "relationship": "targets"
+                    "source": 2,
+                    "target": 3,
+                    "relationship": "uses"
                 }
             ]
         }

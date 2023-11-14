@@ -41,7 +41,7 @@ def add_stix_data(request):
                 stix_totals[stix['type']] = count
 
             for _ in range(count):
-                stix_dict[stix_objects.index(stix)].append(StixBuilderFactory.create(stix['object']))
+                stix_dict[stix_objects.index(stix)].append(StixBuilderFactory.create(stix))
 
         relationship_list = []
         for relationship in (relationships):
