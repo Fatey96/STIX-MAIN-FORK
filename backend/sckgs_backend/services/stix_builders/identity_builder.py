@@ -4,6 +4,7 @@ import faker
 import json
 
 class IdentityBuilder(StixBuilder):
+    # For testing will delete later
     def __init__(self, data):
         self.name = data.get('name')
 
