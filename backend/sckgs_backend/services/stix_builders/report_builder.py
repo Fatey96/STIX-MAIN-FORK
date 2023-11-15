@@ -12,4 +12,5 @@ class ReportBuilder(StixBuilder):
         self.object_refs = data.get('object_refs')
 
     def create(self):
-        pass
+        return Report(name=self.name, published=self.published, object_refs=self.object_refs)
+            

@@ -16,4 +16,5 @@ class IntrusionSetBuilder(StixBuilder):
         self.secondary_motivations = data.get('secondary_motivations')
 
     def create(self):
-        pass
+        return IntrusionSet(name=self.name)
+            

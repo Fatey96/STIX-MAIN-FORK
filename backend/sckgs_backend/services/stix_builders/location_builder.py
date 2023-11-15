@@ -18,4 +18,14 @@ class LocationBuilder(StixBuilder):
         self.postal_code = data.get('postal_code')
 
     def create(self):
-        pass
+        if self.name is None:
+            return Location(region='americas')
+        else:
+            return Location(name=self.name, region='americas')
+        
+        # if self.region is not None:
+        #     return Location(region=self.region)
+        # elif self.country is not None:
+        #     return Location(country=self.country)
+        # elif self.latitude and self.longitude is not None:
+        #     return Location(latitude=self.latitude, longitude=self.longitude)

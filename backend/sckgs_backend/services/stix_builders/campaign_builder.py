@@ -13,5 +13,5 @@ class CampaignBuilder(StixBuilder):
         self.objective = data.get('objective')
 
     def create(self):
-        if self.name is not None:
-            return Campaign(name=self.name)
+        return Campaign(name=self.name)
+            

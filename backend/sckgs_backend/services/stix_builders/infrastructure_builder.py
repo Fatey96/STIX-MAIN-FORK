@@ -14,4 +14,5 @@ class InfrastructureBuilder(StixBuilder):
         self.last_seen = data.get('last_seen')
 
     def create(self):
-        pass
+        return Infrastructure(name=self.name)
+            

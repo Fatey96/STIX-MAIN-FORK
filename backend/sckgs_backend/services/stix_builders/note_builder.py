@@ -11,4 +11,5 @@ class NoteBuilder(StixBuilder):
         self.object_refs = data.get('object_refs')
 
     def create(self):
-        pass
+        return Note(content=self.content, object_refs=self.object_refs)
+            

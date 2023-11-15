@@ -12,5 +12,5 @@ class AttackPatternBuilder(StixBuilder):
         self.kill_chain_phases = data.get('kill_chain_phases')
 
     def create(self):
-        if self.name is not None:
-            return AttackPattern(name=self.name)
+        return AttackPattern(name=self.name)
+            

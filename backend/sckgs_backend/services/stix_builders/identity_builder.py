@@ -9,9 +9,8 @@ class IdentityBuilder(StixBuilder):
         self.name = data.get('name')
 
     def create(self):
-        if self.name is not None:
-            return Identity(name=self.name)
-        
+        return Identity(name=self.name)
+            
     # counter = 0
     # faker_instance = faker.Faker()
 

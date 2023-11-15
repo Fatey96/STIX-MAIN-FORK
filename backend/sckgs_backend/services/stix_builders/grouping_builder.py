@@ -11,4 +11,5 @@ class GroupingBuilder(StixBuilder):
         self.object_refs = data.get('object_refs')
 
     def create(self):
-        pass
+        return Grouping(object_refs=self.object_refs)
+            

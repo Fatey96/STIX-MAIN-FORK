@@ -16,4 +16,5 @@ class IndicatorBuilder(StixBuilder):
         self.kill_chain_phases = data.get('kill_chain_phases')
 
     def create(self):
-        pass
+        return Indicator(pattern=self.pattern, pattern_type=self.pattern_type, valid_from=self.valid_from)
+            

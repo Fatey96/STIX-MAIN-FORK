@@ -9,6 +9,5 @@ class IncidentBuilder(StixBuilder):
         self.description = data.get('description')
 
     def create(self):
-        print(self.name)
-        if self.name is not None:
-            return Incident(name=self.name)
+        return Incident(name=self.name)
+            

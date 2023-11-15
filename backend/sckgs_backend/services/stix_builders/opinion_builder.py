@@ -11,4 +11,5 @@ class OpinionBuilder(StixBuilder):
         self.object_refs = data.get('object_refs')
 
     def create(self):
-        pass
+        return Opinion(opinion=self.opinion, object_refs=self.object_refs)
+            

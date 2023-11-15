@@ -4,11 +4,11 @@ import faker
 import json
 
 class CourseOfActionBuilder(StixBuilder):
-    def __int__(self, data):
+    def __init__(self, data):
         self.name = data.get('name')
         self.description = data.get('description')
         self.action = data.get('action')
 
     def create(self):
-        if self.name is not None:
-            return CourseOfAction(name=self.name)
+        return CourseOfAction(name=self.name)
+            

@@ -13,4 +13,5 @@ class ToolBuilder(StixBuilder):
         self.tool_version = data.get('tool_version')
 
     def create(self):
-        pass
+        return Tool(name=self.name)
+            

@@ -2,47 +2,29 @@
 class StixProportions:
     @staticmethod
     def get_proportions(type):
-        match type:
-            case 'attack-pattern':
-                return 
-            case 'campaign':
-                return 0.10
-            case 'course-of-action':
-                return 
-            case 'grouping':
-                return 
-            case 'identity':
-                return 0.25
-            case 'incident':
-                return 
-            case 'indicator':
-                return 
-            case 'infrastructure':
-                return 
-            case 'intrusion-set':
-                return 
-            case 'location':
-                return 0.15
-            case 'malware': 
-                return 0.15
-            case 'malware-analysis':
-                return 
-            case 'note':
-                return 
-            case 'observed-data':
-                return 
-            case 'opinion':
-                return 
-            case 'report':
-                return 
-            case 'threat-actor':
-                return 0.10
-            case 'tool':
-                return 
-            case 'vulnerability':
-                return 
-            case _:
-                print("No match found")
+        proportions = {          
+            'attack-pattern': 0.05,
+            'campaign': 0.05,
+            'course-of-action': 0.05,
+            'grouping': 0.10,
+            'identity': 0.20,
+            'incident': 0.10,
+            'indicator': 0.10,
+            'infrastructure': 0.10,
+            'intrusion-set': 0.10,
+            'location': 0.10,
+            'malware': 0.10,
+            'malware-analysis': 0.10,
+            'note': 0.10,
+            'observed-data': 0.10,
+            'opinion': 0.10,
+            'report': 0.10,
+            'threat-actor':  0.15,
+            'tool': 0.10,
+            'vulnerability': 0.10
+        }
+
+        return proportions.get(type)
     
     @staticmethod
     def adjust_proportions(proportions):
@@ -57,6 +39,6 @@ class StixProportions:
             adjustment = difference / len(proportions)
             adjusted_dict = {key: value - adjustment for key, value in proportions.items()}
         else:
-            return proportions
+             proportions
         
         return adjusted_dict

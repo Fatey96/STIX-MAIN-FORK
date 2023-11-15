@@ -9,9 +9,8 @@ class ThreatActorBuilder(StixBuilder):
         self.name = data.get('name')
 
     def create(self):
-        if self.name is not None:
-            return ThreatActor(name=self.name)
-        
+        return ThreatActor(name=self.name)
+             
     # counter = 0
     # faker_instance = faker.Faker()
 

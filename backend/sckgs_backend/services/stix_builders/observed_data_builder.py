@@ -12,4 +12,5 @@ class ObservedDataBuilder(StixBuilder):
         self.object_refs = data.get('object_refs')
 
     def create(self):
-        pass
+        return ObservedData(first_observed=self.first_observed, last_observed=self.last_observed, number_observed=self.number_observed)
+            
