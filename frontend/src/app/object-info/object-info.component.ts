@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-object-info',
@@ -12,9 +12,26 @@ export class ObjectInfoComponent {
   @Input() inputType: string = ''
   @Input() selectOptions: string[] = []
   @Input() checkboxOptions: string[] = []
-  @Input() radioOptions: string[] = []
   isCheckboxAreaExpanded = false
-  selectedCheckboxOptions: string[] = []  
+  selectedCheckboxOptions: string[] = []
+  enteredListValue: string = ''   // Variable to store the current entered value
+  listValues: string[] = []   // Array to store the list of entered values
+  @Output() listValuesChanged = new EventEmitter<string[]>()
+
+  // Handle input event and update list values
+  updateListValues(): void {
+    if (this.enteredListValue.trim() !== '') {
+      this.listValues.push(this.enteredListValue.trim())
+      this.enteredListValue = ''   // Clear the entered value
+      this.listValuesChanged.emit(this.listValues)   // Emit updated list values
+    }
+  }
+
+  // Remove an item from the list
+  removeListValue(index: number): void {
+    this.listValues.splice(index, 1)
+    this.listValuesChanged.emit(this.listValues)  // Emit updated list values
+  }
 
   // Allows for the opening/closing of the checkboxes dropdown
   toggleCheckboxArea() {
@@ -27,6 +44,24 @@ export class ObjectInfoComponent {
       this.selectedCheckboxOptions = this.selectedCheckboxOptions.filter((item) => item !== option)
     } else {
       this.selectedCheckboxOptions.push(option)
+    }
+  }
+
+  // Handle input event and update requirement status
+  updateStatus(event: any): void {
+    let value = parseFloat(event.target.value)
+    let isLatitude = this.inputType === 'latitude'
+    let isLongitude = this.inputType === 'longitude'
+
+    if (!isNaN(value)) {
+      if (this.inputType === 'latitude' || this.inputType === 'longitude') {
+        let min = isLatitude ? -90 : -180
+        let max = isLatitude ? 90 : 180
+
+        if (value < min || value > max) {
+          event.target.value = Math.min(max, Math.max(min, value)).toString()
+        }
+      }
     }
   }
 }

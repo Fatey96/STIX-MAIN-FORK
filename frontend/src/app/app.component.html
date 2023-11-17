@@ -27,15 +27,19 @@
       { inputType: 'select', stixProperty: 'exampleSelect', propertyName: 'Example Select', isRequired: false, selectOptions: ['Option 1', 'Option 2', 'Option 3'] }
       { inputType: 'checkbox', stixProperty: 'exampleCheckbox', propertyName: 'Example Checkbox', isRequired: false, checkboxOptions: ['Option 1', 'Option 2', 'Option 3'] }
       { inputType: 'timestamp', stixProperty: 'exampleTimestamp', propertyName: 'Example Timestamp', isRequired: false }
+      { inputType: 'float', stixProperty: 'exampleFloat', propertyName: 'Example Float', isRequired: false }
+      { inputType: 'stringlist', stixProperty: 'exampleStringlist', propertyName: 'Example String List', isRequired: false }
     -->
     <ng-container *ngFor="let box of [
         {name: 'Attack Pattern', type: 'attack-pattern', fields: [
           { inputType: 'text', stixProperty: 'name', propertyName: 'Name', isRequired: true }, 
-          { inputType: 'text', stixProperty: 'description', propertyName: 'Description', isRequired: false }
+          { inputType: 'text', stixProperty: 'description', propertyName: 'Description', isRequired: false },
+          { inputType: 'stringlist', stixProperty: 'aliases', propertyName: 'Aliases', isRequired: false }
         ]},
         {name: 'Campaign', type: 'campaign', fields: [
         { inputType: 'text', stixProperty: 'name', propertyName: 'Name', isRequired: true }, 
         { inputType: 'text', stixProperty: 'description', propertyName: 'Description', isRequired: false },
+        { inputType: 'stringlist', stixProperty: 'aliases', propertyName: 'Aliases', isRequired: false },
         { inputType: 'timestamp', stixProperty: 'first_seen', propertyName: 'First Seen', isRequired: false },
         { inputType: 'timestamp', stixProperty: 'last_seen', propertyName: 'Last Seen', isRequired: false },
         { inputType: 'text', stixProperty: 'objective', propertyName: 'Objective', isRequired: false }
@@ -52,10 +56,10 @@
         {name: 'Identity', type: 'identity', fields: [
           { inputType: 'text', stixProperty: 'name', propertyName: 'Name', isRequired: true }, 
           { inputType: 'text', stixProperty: 'description', propertyName: 'Description', isRequired: false }, 
-          { inputType: 'text', stixProperty: 'contact_information', propertyName: 'Contact Information', isRequired: false },
-          { inputType: 'checkbox', stixProperty: 'roles', propertyName: 'Roles', isRequired: false, checkboxOptions: ['CEO', 'Domain Administrator', 'Doctor', 'Hospital', 'Retailer'] },
+          { inputType: 'stringlist', stixProperty: 'roles', propertyName: 'Roles', isRequired: false },
           { inputType: 'select', stixProperty: 'identity_class', propertyName: 'Identity Class', isRequired: false, selectOptions: ['individual', 'group', 'system', 'organization', 'class', 'unknown'] },
-          { inputType: 'checkbox', stixProperty: 'sectors', propertyName: 'Sectors', isRequired: false, checkboxOptions: ['agriculture', 'education', 'government', 'healthcare', 'infrastructure', 'utilities'] }
+          { inputType: 'checkbox', stixProperty: 'sectors', propertyName: 'Sectors', isRequired: false, checkboxOptions: ['agriculture', 'education', 'government', 'healthcare', 'infrastructure', 'utilities'] },
+          { inputType: 'text', stixProperty: 'contact_information', propertyName: 'Contact Information', isRequired: false }
         ]}, 
         {name: 'Incident', type: 'incident', fields: [
           { inputType: 'text', stixProperty: 'name', propertyName: 'Name', isRequired: true }, 
@@ -75,15 +79,17 @@
           { inputType: 'text', stixProperty: 'name', propertyName: 'Name', isRequired: true }, 
           { inputType: 'text', stixProperty: 'description', propertyName: 'Description', isRequired: false },
           { inputType: 'checkbox', stixProperty: 'infrastructure_types', propertyName: 'Infrastructure Types', isRequired: false, checkboxOptions: ['anonymization', 'botnet', 'exfiltration', 'firewall', 'phishing', 'unknown'] },
+          { inputType: 'stringlist', stixProperty: 'aliases', propertyName: 'Aliases', isRequired: false },
           { inputType: 'timestamp', stixProperty: 'first_seen', propertyName: 'First Seen', isRequired: false },
           { inputType: 'timestamp', stixProperty: 'last_seen', propertyName: 'Last Seen', isRequired: false }
         ]},
         {name: 'Intrusion Set', type: 'intrusion-set', fields: [
           { inputType: 'text', stixProperty: 'name', propertyName: 'Name', isRequired: true }, 
           { inputType: 'text', stixProperty: 'description', propertyName: 'Description', isRequired: false },
-          { inputType: 'checkbox', stixProperty: 'infrastructure_types', propertyName: 'Infrastructure Types', isRequired: false, checkboxOptions: ['anonymization', 'botnet', 'exfiltration', 'firewall', 'phishing', 'unknown'] },
+          { inputType: 'stringlist', stixProperty: 'aliases', propertyName: 'Aliases', isRequired: false },
           { inputType: 'timestamp', stixProperty: 'first_seen', propertyName: 'First Seen', isRequired: false },
           { inputType: 'timestamp', stixProperty: 'last_seen', propertyName: 'Last Seen', isRequired: false },
+          { inputType: 'stringlist', stixProperty: 'goals', propertyName: 'Goals', isRequired: false },
           { inputType: 'select', stixProperty: 'resource_level', propertyName: 'Resource Level', isRequired: false, selectOptions: ['individual', 'club', 'contest', 'team', 'organization', 'government'] },
           { inputType: 'select', stixProperty: 'primary_motivation', propertyName: 'Primary Motivation', isRequired: false, selectOptions: ['accidental', 'coercion', 'organizational-gain', 'personal-gain', 'personal-satisfaction', 'revenge'] },
           { inputType: 'checkbox', stixProperty: 'secondary_motivations', propertyName: 'Secondary Motivations', isRequired: false, checkboxOptions: ['accidental', 'coercion', 'organizational-gain', 'personal-gain', 'personal-satisfaction', 'revenge'] }
@@ -91,6 +97,9 @@
         {name: 'Location', type: 'location', fields: [
           { inputType: 'text', stixProperty: 'name', propertyName: 'Name', isRequired: false }, 
           { inputType: 'text', stixProperty: 'description', propertyName: 'Description', isRequired: false },
+          { inputType: 'latitude', stixProperty: 'latitude', propertyName: 'Latitude', isRequired: false },
+          { inputType: 'longitude', stixProperty: 'longitude', propertyName: 'Longitude', isRequired: false },
+          { inputType: 'precision', stixProperty: 'precision', propertyName: 'Precision', isRequired: false },
           { inputType: 'select', stixProperty: 'region', propertyName: 'Region', isRequired: false, selectOptions: ['africa', 'americas', 'asia', 'europe', 'oceania'] },
           { inputType: 'text', stixProperty: 'country', propertyName: 'Country', isRequired: false }, 
           { inputType: 'text', stixProperty: 'administrative_area', propertyName: 'Administrative Area', isRequired: false },
@@ -99,16 +108,18 @@
           { inputType: 'text', stixProperty: 'postal_code', propertyName: 'Postal Code', isRequired: false }
         ]},
         {name: 'Malware', type: 'malware', fields: [
-          { inputType: 'select', stixProperty: 'is_family', propertyName: 'Malware Family', isRequired: true, selectOptions: ['Yes', 'No'] },
           { inputType: 'text', stixProperty: 'name', propertyName: 'Name', isRequired: false }, 
           { inputType: 'text', stixProperty: 'description', propertyName: 'Description', isRequired: false },
           { inputType: 'checkbox', stixProperty: 'malware_types', propertyName: 'Malware Types', isRequired: false, checkboxOptions: ['ddos', 'ransomware', 'trojan', 'unknown', 'virus'] },
+          { inputType: 'select', stixProperty: 'is_family', propertyName: 'Malware Family', isRequired: true, selectOptions: ['Yes', 'No'] },
+          { inputType: 'stringlist', stixProperty: 'aliases', propertyName: 'Aliases', isRequired: false },
           { inputType: 'timestamp', stixProperty: 'first_seen', propertyName: 'First Seen', isRequired: false },
           { inputType: 'timestamp', stixProperty: 'last_seen', propertyName: 'Last Seen', isRequired: false }
         ]}, 
         {name: 'Malware Analysis', type: 'malware-analysis', fields: [
           { inputType: 'text', stixProperty: 'version', propertyName: 'Version', isRequired: false }, 
           { inputType: 'text', stixProperty: 'configuration_version', propertyName: 'Configuration Version', isRequired: false }, 
+          { inputType: 'stringlist', stixProperty: 'modules', propertyName: 'Modules', isRequired: false },
           { inputType: 'text', stixProperty: 'analysis_engine_version', propertyName: 'Analysis Engine Version', isRequired: false }, 
           { inputType: 'text', stixProperty: 'analysis_definition_version', propertyName: 'Analysis Definition Version', isRequired: false }, 
           { inputType: 'timestamp', stixProperty: 'submitted', propertyName: 'Submitted', isRequired: false },
@@ -119,14 +130,16 @@
         ]},
         {name: 'Note', type: 'note', fields: [
           { inputType: 'text', stixProperty: 'content', propertyName: 'Content', isRequired: true },
-          { inputType: 'text', stixProperty: 'abstract', propertyName: 'Abstract', isRequired: false }
+          { inputType: 'text', stixProperty: 'abstract', propertyName: 'Abstract', isRequired: false },
+          { inputType: 'stringlist', stixProperty: 'authors', propertyName: 'Authors', isRequired: false },
         ]}, 
         {name: 'Observed Data', type: 'observed-data', fields: [
           { inputType: 'timestamp', stixProperty: 'first_observed', propertyName: 'First Observed', isRequired: true },
           { inputType: 'timestamp', stixProperty: 'last_observed', propertyName: 'Last Observed', isRequired: true }  
         ]},
         {name: 'Opinion', type: 'opinion', fields: [
-          { inputType: 'text', stixProperty: 'explanation', propertyName: 'Explanation', isRequired: false }
+          { inputType: 'text', stixProperty: 'explanation', propertyName: 'Explanation', isRequired: false },
+          { inputType: 'stringlist', stixProperty: 'authors', propertyName: 'Authors', isRequired: false },
         ]},
         {name: 'Report', type: 'report', fields: [
           { inputType: 'text', stixProperty: 'name', propertyName: 'Name', isRequired: true }, 
@@ -138,9 +151,11 @@
           { inputType: 'text', stixProperty: 'name', propertyName: 'Name', isRequired: true }, 
           { inputType: 'text', stixProperty: 'description', propertyName: 'Description', isRequired: false },
           { inputType: 'checkbox', stixProperty: 'threat_actor_types', propertyName: 'Threat Actor Type', isRequired: false, checkboxOptions: ['activist', 'criminal', 'hacker', 'nation-state', 'spy', 'unknown'] },
+          { inputType: 'stringlist', stixProperty: 'aliases', propertyName: 'Aliases', isRequired: false },
           { inputType: 'timestamp', stixProperty: 'first_seen', propertyName: 'First Seen', isRequired: false },
           { inputType: 'timestamp', stixProperty: 'last_seen', propertyName: 'Last Seen', isRequired: false },
           { inputType: 'checkbox', stixProperty: 'roles', propertyName: 'Roles', isRequired: false, checkboxOptions: ['agent', 'director', 'independent', 'infrastructure-architect', 'infrastructure-operator', 'malware-author', 'sponsor'] },
+          { inputType: 'stringlist', stixProperty: 'goals', propertyName: 'Goals', isRequired: false },
           { inputType: 'select', stixProperty: 'sophistication', propertyName: 'Sophistication', isRequired: false, selectOptions: ['none', 'minimal', 'intermediate', 'advanced', 'expert', 'innovator', 'strategic'] },
           { inputType: 'select', stixProperty: 'resource_level', propertyName: 'Resource Level', isRequired: false, selectOptions: ['individual', 'club', 'contest', 'team', 'organization', 'government'] },
           { inputType: 'select', stixProperty: 'primary_motivation', propertyName: 'Primary Motivation', isRequired: false, selectOptions: ['accidental', 'coercion', 'organizational-gain', 'personal-gain', 'personal-satisfaction', 'revenge'] },
@@ -151,6 +166,7 @@
           { inputType: 'text', stixProperty: 'name', propertyName: 'Name', isRequired: true },
           { inputType: 'text', stixProperty: 'description', propertyName: 'Description', isRequired: false },
           { inputType: 'checkbox', stixProperty: 'tool_types', propertyName: 'Tool Types', isRequired: false, checkboxOptions: ['denial-of-service', 'exploitation', 'information-gathering', 'network-capture', 'credential-exploitation', 'remote-access', 'vulnerability-scanning', 'unknown'] },
+          { inputType: 'stringlist', stixProperty: 'aliases', propertyName: 'Aliases', isRequired: false },
           { inputType: 'text', stixProperty: 'tool_version', propertyName: 'Tool Version', isRequired: true }
         ]},
         {name: 'Vulnerability', type: 'vulnerability', fields: [

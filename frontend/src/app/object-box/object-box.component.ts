@@ -63,4 +63,10 @@ export class ObjectBoxComponent {
   areAllFormsValid(): boolean {
     return this.forms.toArray().every(formComponent => formComponent.isValid())
   }  
+
+  listValues: string[] = [];
+
+  updateListValues(newListValues: string[]): void {
+    this.listValues = newListValues;
+  }
 }
