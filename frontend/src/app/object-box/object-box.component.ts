@@ -15,6 +15,7 @@ export class ObjectBoxComponent {
   @Output() formDeleted = new EventEmitter<void>()  // Event emitted when a form is deleted
   @Output() lastFormDeleted = new EventEmitter<string>()  // Event emitted when the last form inside the box is deleted
   @ViewChildren(ObjectFormComponent) forms!: QueryList<ObjectFormComponent> 
+  listValues: string[] = []
 
   // Contains details of each form within the box, initialized with one form to ensure there's always at least one form displayed by default
   formDetails: Array<{ id: number, fields: any[], formID: string }> = [
@@ -64,9 +65,7 @@ export class ObjectBoxComponent {
     return this.forms.toArray().every(formComponent => formComponent.isValid())
   }  
 
-  listValues: string[] = [];
-
   updateListValues(newListValues: string[]): void {
-    this.listValues = newListValues;
+    this.listValues = newListValues
   }
 }

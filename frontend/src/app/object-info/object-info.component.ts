@@ -12,7 +12,7 @@ export class ObjectInfoComponent {
   @Input() inputType: string = ''
   @Input() selectOptions: string[] = []
   @Input() checkboxOptions: string[] = []
-  isCheckboxAreaExpanded = false
+  isDropdownExpanded: boolean = false
   selectedCheckboxOptions: string[] = []
   enteredListValue: string = ''   // Variable to store the current entered value
   listValues: string[] = []   // Array to store the list of entered values
@@ -34,11 +34,11 @@ export class ObjectInfoComponent {
   }
 
   // Allows for the opening/closing of the checkboxes dropdown
-  toggleCheckboxArea() {
-    this.isCheckboxAreaExpanded = !this.isCheckboxAreaExpanded
+  openDropdown() {
+    this.isDropdownExpanded = !this.isDropdownExpanded
   }
 
-  // Updates the _ selected text in the checkbox selects
+  // Updates the selected options in the checkbox selects
   updateSelectedOptions(option: string) {
     if (this.selectedCheckboxOptions.includes(option)) {
       this.selectedCheckboxOptions = this.selectedCheckboxOptions.filter((item) => item !== option)
@@ -48,20 +48,41 @@ export class ObjectInfoComponent {
   }
 
   // Handle input event and update requirement status
-  updateStatus(event: any): void {
+  // TODO: Allow for the updating of requirement status for latitude, longitude, and precision
+  updateNumber(event: any): void {
     let value = parseFloat(event.target.value)
-    let isLatitude = this.inputType === 'latitude'
-    let isLongitude = this.inputType === 'longitude'
+    var min: number | undefined = 0
+    var max: number | undefined = 0
 
     if (!isNaN(value)) {
-      if (this.inputType === 'latitude' || this.inputType === 'longitude') {
-        let min = isLatitude ? -90 : -180
-        let max = isLatitude ? 90 : 180
-
-        if (value < min || value > max) {
-          event.target.value = Math.min(max, Math.max(min, value)).toString()
-        }
+      if (this.inputType === 'latitude') {
+        min = -90
+        max = 90
       }
+
+      if (this.inputType === 'longitude') {
+        min = -180
+        max = 180
+      }
+
+      if (this.inputType === 'integer') {
+        min = 1
+        max = 999999999
+      }
+
+      if (value < min || value > max) {
+        event.target.value = Math.min(max, Math.max(min, value)).toString()
+      }
+    }
+  }
+
+  updateText(event: any): void {
+    let value = event.target.value
+
+    if (this.inputType === 'product') {
+      // Convert to lowercase and replace spaces with dashes
+      value = value.toLowerCase().replace(/\s+/g, '-')
+      event.target.value = value
     }
   }
 }
