@@ -33,11 +33,14 @@ export class ObjectFormComponent {
           }
         }
       } else if (element.type === 'text' && element.getAttribute('data-input-type') === 'stringlist') {
-        const existingData = data.find(item => item.key === element.id);
-        if (existingData) {
-          existingData.value.push(...this.listValues)
-        } else {
-          data.push({ key: element.id, value: [...this.listValues] })
+        const enteredValues = this.listValues.filter(value => value.trim() !== '')
+        if (enteredValues.length > 0) {
+          const existingData = data.find(item => item.key === element.id)
+          if (existingData) {
+            existingData.value.push(...enteredValues)
+          } else {
+            data.push({ key: element.id, value: [...enteredValues] })
+          }
         }
       } else {
         if (element.value.trim() !== '') {
