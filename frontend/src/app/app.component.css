@@ -1,0 +1,285 @@
+/*****************/
+/* Global Styles */
+/*****************/
+.content {
+    width: 80%;
+    margin: auto;
+}
+
+h1 {    /* Toolbar */
+    padding: .5em;
+    text-align: center;
+    border-bottom: 2px solid var(--accent-red);
+    font-size: 2em;
+    font-weight: 600;
+    margin-bottom: 1em;
+}
+
+h2 {    /* Large Titles */
+    text-align: center;
+    font-size: 1.35em;
+    font-weight: 600;
+}
+
+h3, .dataset-label {    /* Small Titles */
+    margin: 0;
+    padding: 0;
+    font-size: 1.25em;
+    font-weight: 500;
+}
+
+p {     /* Top paragraph and footer */
+    text-align: center;
+    margin: 0 auto 2em auto;
+}
+
+footer {    /* Footer */
+    padding-top: 2em;
+}
+
+ul, li {    /* In stix-object-column, object-details-container, displays user input on their selected objects */
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+}
+
+/**************/
+/* Containers */
+/**************/
+.object-buttons-container {     /* description-page, lists all the SDOs that the user can choose from */
+    margin: 0 auto 1em auto;
+    padding: 1em;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    height: fit-content;
+    border: 2px solid var(--accent-gray);
+    border-radius: 5px;
+}
+
+.relationship-selection-container {     /* relationship-page, divides the stix-object-column, stix-relationship-column, and if-relationship/if-sighting */
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: .5em;
+}
+
+.stix-object-column, .stix-relationship-column, .if-relationship, .if-sighting {    /* these are the previously mentioned columns */
+    width: 90%;
+    margin: 0 auto 0 auto;
+}
+
+.object-details-container {     /* relationship-page, holds the ul/li for user input on selected objects */
+    margin-left: 1em;
+}
+
+.selected-relationships-column {
+    width: 85%;
+    display: flex;
+    border-top: 1px solid var(--accent-gray);
+    padding-top: 1em;
+    margin: 1em auto;
+}
+
+.selected-relationships-container {     /* relationship-page, holds the data for the created relationships */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: .5em;
+    width: 90%;
+    margin: auto;
+}
+
+.selected-relationships-column:last-of-type {
+    border-bottom: 1px solid var(--accent-gray);
+    padding-bottom: 1em;
+}
+
+.objects-created {
+    margin: 1em auto;
+    padding: 1em;
+    height: fit-content;
+    border: 2px solid var(--accent-gray);
+    border-radius: 5px;
+    max-width: 500px;
+}
+
+.objects-amount {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: center;
+    gap: 1em;
+    padding-top: .5em;
+}
+
+.bundle-output {
+    margin: 1em auto;
+    padding: 1em;
+    height: fit-content;
+    border: 2px solid var(--accent-gray);
+    border-radius: 5px;
+    max-width: 500px;
+}
+
+.dataset-container {
+    padding-bottom: 1em;
+}
+
+/**********************/
+/* Buttons and Select */
+/**********************/
+.hidden-radio {     /* Input radios for user to pick whether to create a relationship or sighting */
+    display: none;
+}
+
+.hidden-radio:checked + .relationship-label {     /* Checked appearance for radio mentioned above */
+    padding: .45em;
+    border: 4px solid var(--accent-teal);
+}
+
+.select-relationships-btn, .continue {     /* description-page, Select Relationships button to proceed to next page */
+    display: block;
+    margin: auto;
+    cursor: pointer;
+    padding: .6em;
+    text-align: center;
+    text-wrap: nowrap;
+    background-color: transparent;
+    border: 2px solid var(--accent-blue);
+    border-radius: 5px;
+    color: var(--text-main);
+    font-size: 1em;
+}
+
+.select-relationships-btn:hover, .continue:hover {   /* Hover for button above */
+    padding: .45em;
+    border: 4px solid var(--accent-teal);
+}
+
+.object-title-buttons, .edit-btn {     /* relationship-page, stix-object-column, allows the user to view their objects under each category */
+    display: block;
+    margin: auto;
+    cursor: pointer;
+    padding: .4em;
+    width: 100%;
+    text-align: left;
+    text-wrap: nowrap;
+    background-color: transparent;
+    border: 2px solid var(--accent-gray);
+    border-radius: 5px;
+    color: var(--text-main);
+    font-size: 1em;
+    margin-top: .75em;
+}
+
+.edit-btn {
+    border: 2px solid var(--accent-blue);
+    font-weight: 500;
+}
+
+.edit-btn:hover, .bundle-btn:hover {
+    border: 4px solid var(--accent-teal);
+}
+
+.create-btn, .view-btn {   /* relationship-page, if-relationship/if-sighting, button to confirm the creation of relationship or sighting */
+    display: block;
+    margin: auto;
+    cursor: pointer;
+    padding: .4em;
+    width: 80%;
+    text-align: center;
+    text-wrap: nowrap;
+    background-color: var(--accent-blue);
+    border: 2px solid var(--accent-blue);
+    border-radius: 5px;
+    color: var(--main-bg);
+    font-size: 1em;
+    margin-top: .75em;
+}
+
+.view-btn {
+    max-width: 200px;
+}
+
+.bundle-btn {
+    display: block;
+    cursor: pointer;
+    padding: .4em;
+    width: 100%;
+    text-align: center;
+    text-wrap: nowrap;
+    background-color: transparent;
+    color: var(--text-main);
+    font-size: 1em;
+    margin-top: .75em;
+    border: 2px solid var(--accent-blue);
+    border-radius: 5px;
+    font-weight: 500;
+}
+
+.bundle-btn-container {
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+    padding-bottom: 1em;
+}
+
+.relationship-label, .relationship-select {   
+    display: block;
+    margin: auto;
+    cursor: pointer;
+    padding: .4em;
+    width: 100%;
+    text-align: left;
+    text-wrap: nowrap;
+    background-color: transparent;
+    border: 2px solid var(--accent-blue);
+    border-radius: 5px;
+    color: var(--text-main);
+    font-size: 1em;
+    margin-top: .75em;
+}
+
+.relationship-select, .relationship-option {    /* relationship-page, if-relationship/if-sighting, user picks their options for creating a relationship */
+    background-color: var(--main-bg);
+    margin-top: 0;
+    margin-bottom: 1em;
+}
+
+.delete-btn {       /* relationship-page, selected-relationships-container, user can delete a created relationship */
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    text-decoration: underline;
+    color: var(--accent-red);
+    justify-content: flex-start;
+}
+
+/***********************/
+/* Detailed Components */
+/***********************/
+.object-title-h4 {      /* relationship-page, stix-object-column & relationship-column, provides the object titles of the created relationships */
+    font-weight: 500;
+}
+
+.dataset-input {
+    border: 2px solid var(--accent-gray);
+    border-radius: 2px;
+    background-color: transparent;
+}
+
+.object-line {
+    display: flex;
+    gap: .5em;
+}
+
+.object-values {
+    margin: 0;
+    padding: 0;
+    font-size: 1.25em;
+    font-weight: 400;
+}
+
+.hidden {
+    display: none;
+}

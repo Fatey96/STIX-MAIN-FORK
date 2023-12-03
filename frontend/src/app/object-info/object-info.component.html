@@ -1,0 +1,34 @@
+<div class="label-container">
+    <label [for]="stixProperty">
+        {{ propertyName }}
+    </label>
+    <span class="requirement-indicator" [class.required]="isRequired">{{ isRequired ? 'Required' : 'Optional' }}</span>
+</div>
+
+<input class="input-field" type="text" *ngIf="inputType === 'text'" [id]="stixProperty" [name]="propertyName"
+    [required]="isRequired" />
+
+<input class="input-field" type="datetime-local" *ngIf="inputType === 'timestamp' || inputType === 'timestamp'"
+    [id]="stixProperty" [name]="propertyName" [required]="isRequired" />
+
+<select class="select-field" *ngIf="inputType === 'select'" [id]="stixProperty" [name]="propertyName"
+    [required]="isRequired">
+    <option class="option-field" value=""></option>
+    <option class="option-field" *ngFor="let option of selectOptions" [value]="option">{{ option }}</option>
+</select>
+
+<div class="checkbox-container" *ngIf="inputType === 'checkbox'">
+    <div class="checkbox-select" (click)="toggleCheckboxArea()">
+        <select id="empty-select">
+            <option>{{ selectedCheckboxOptions.length }} selected</option>
+        </select>
+        <div class="hide-dropdown"></div>
+    </div>
+    <div class="checkbox-option-container" [ngClass]="{ 'hidden': !isCheckboxAreaExpanded }">
+        <div class="checkbox-option" *ngFor="let option of checkboxOptions">
+            <input class="checkbox-box" type="checkbox" [id]="stixProperty" [name]="propertyName"
+                [required]="isRequired" [value]="option" [checked]="selectedCheckboxOptions.includes(option)" (change)="updateSelectedOptions(option)" />
+            {{ option }}
+        </div>
+    </div>
+</div>
