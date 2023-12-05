@@ -8,7 +8,7 @@
       <app-object-btn
         *ngFor="let object of [{name: 'Attack Pattern', class: 'attack-pattern'}, {name: 'Campaign', class: 'campaign'}, {name: 'Course of Action', class: 'course-of-action'}, 
           {name: 'Grouping', class: 'grouping'}, {name: 'Identity', class: 'identity'}, {name: 'Incident', class: 'incident'}, {name: 'Indicator', class: 'indicator'}, 
-          {name: 'infrastructure', class: 'infrastructure'}, {name: 'Intrusion Set', class: 'intrusion-set'}, {name: 'Location', class: 'location'}, {name: 'Malware', class: 'malware'}, 
+          {name: 'Infrastructure', class: 'infrastructure'}, {name: 'Intrusion Set', class: 'intrusion-set'}, {name: 'Location', class: 'location'}, {name: 'Malware', class: 'malware'}, 
           {name: 'Malware Analysis', class: 'malware-analysis'}, {name: 'Note', class: 'note'}, {name: 'Observed Data', class: 'observed-data'}, {name: 'Opinion', class: 'opinion'}, 
           {name: 'Report', class: 'report'}, {name: 'Threat Actor', class: 'threat-actor'}, {name: 'Tool', class: 'tool'}, {name: 'Vulnerability', class: 'vulnerability'}]"
         [btnName]="object.name" [btnClass]="object.class" (btnClicked)="onObjectButtonClicked($event)">

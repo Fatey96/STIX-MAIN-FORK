@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-object-info',
@@ -14,24 +14,7 @@ export class ObjectInfoComponent {
   @Input() checkboxOptions: string[] = []
   isDropdownExpanded: boolean = false
   selectedCheckboxOptions: string[] = []
-  enteredListValue: string = ''   // Variable to store the current entered value
-  listValues: string[] = []   // Array to store the list of entered values
-  @Output() listValuesChanged = new EventEmitter<string[]>()
-
-  // Handle input event and update list values
-  updateListValues(): void {
-    if (this.enteredListValue.trim() !== '') {
-      this.listValues.push(this.enteredListValue.trim())
-      this.enteredListValue = ''   // Clear the entered value
-      this.listValuesChanged.emit(this.listValues)   // Emit updated list values
-    }
-  }
-
-  // Remove an item from the list
-  removeListValue(index: number): void {
-    this.listValues.splice(index, 1)
-    this.listValuesChanged.emit(this.listValues)  // Emit updated list values
-  }
+  inputValue: string = ''
 
   // Allows for the opening/closing of the checkboxes dropdown
   openDropdown() {

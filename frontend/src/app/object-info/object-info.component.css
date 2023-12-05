@@ -24,7 +24,7 @@ label {
     color: var(--accent-red);
 }
 
-.input-field, .select-field, .checkbox-container, .list-container {
+.input-field, .select-field, .checkbox-container {
     position: relative;
     background-color: transparent;
     border: 1px solid var(--text-main);
@@ -33,17 +33,7 @@ label {
     width: 220px;
     height: 25px;
     box-sizing: border-box;
-}
-
-.list-container {
-    padding: 0px;
-}
-
-.input-field-list {
-    width: 100%;
-    padding: 2px;
-    border: none;
-    box-sizing: border-box;
+    text-overflow: ellipsis;
 }
 
 .option-field {
@@ -91,35 +81,6 @@ label {
     background: none;
     padding: 0;
     margin: 0;
-}
-
-.list-item-container {
-    position: absolute;
-    z-index: 1;
-    width: 100%;
-    background-color: var(--main-bg);
-    border: 1px solid var(--text-main);
-    border-radius: 3px;
-}
-
-.list-item {
-    display: grid;
-    grid-template-columns: min-content 1fr;
-    align-items: center;
-    gap: 4px;
-    margin: 2px;
-    line-height: 1.2em;
-    border-bottom: 1px solid var(--accent-gray);
-}
-
-.list-item:last-of-type {
-    border-bottom: none;
-}
-
-.remove-item {
-    font-size: 1.2em;
-    height: min-content;
-    width: min-content;
 }
 
 p {

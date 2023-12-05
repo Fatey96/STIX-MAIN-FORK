@@ -10,7 +10,7 @@
             <button class="delete" (click)="deleteForm(formDetail.id)">Delete</button>
         </div>
         <p class="location-message" *ngIf="stixType === 'location'">At least one of the following properties/sets of properties <span>MUST</span> be provided: <span>region</span>, <span>country</span>, or both <span>latitude and longitude</span>.</p>
-        <app-object-form [class]="stixType" [formTitle]="stixType + '-' + (i + 1)" [listValues]="listValues">
+        <app-object-form [class]="stixType" [formTitle]="stixType + '-' + (i + 1)">
             <ng-container *ngFor="let field of formFields">
                 <app-object-info 
                     [inputType]="field.inputType" 
@@ -19,7 +19,6 @@
                     [isRequired]="field.isRequired"
                     [selectOptions]="field.selectOptions"
                     [checkboxOptions]="field.checkboxOptions"
-                    (listValuesChanged)="updateListValues($event)"
                 >
                 </app-object-info>
             </ng-container>

@@ -13,6 +13,10 @@
 <input class="input-field" type="text" *ngIf="inputType === 'text'" [id]="stixProperty" [name]="propertyName"
     [required]="isRequired" />
 
+<!-- List - Stringlist -->
+<input class="input-field" type="text" *ngIf="inputType === 'stringlist'" [id]="stixProperty" [name]="propertyName" [required]="isRequired" 
+    data-input-type="stringlist" [placeholder]="'E.g. ' + propertyName + '1, ' + propertyName + '2'" />  
+
 <!-- Timestamp -->
 <input class="input-field" type="datetime-local" *ngIf="inputType === 'timestamp'" [id]="stixProperty"
     [name]="propertyName" [required]="isRequired" />
@@ -33,23 +37,6 @@
     <option class="option-field" value=""></option>
     <option class="option-field" *ngFor="let option of selectOptions" [value]="option">{{ option }}</option>
 </select>
-
-<!-- List - Stringlist -->
-<div class="list-container" *ngIf="inputType === 'stringlist'">
-    <div class="dropdown-container">
-        <input class="input-field-list" type="text" [id]="stixProperty" [name]="propertyName" [required]="isRequired"
-            [(ngModel)]="enteredListValue" (keyup.enter)="updateListValues()" data-input-type="stringlist" placeholder="Type here..." />
-        <mat-icon *ngIf="listValues.length > 0" class="dropdown-icon"
-            (click)="openDropdown()">expand_more</mat-icon>
-    </div>
-
-    <div class="list-item-container" [ngClass]="{ 'hidden': !isDropdownExpanded }" *ngIf="listValues.length > 0">
-        <div class="list-item" *ngFor="let value of listValues; let i = index">
-            <mat-icon class="remove-item" (click)="removeListValue(i)">close</mat-icon>
-            <p>{{ value }}</p>
-        </div>
-    </div>
-</div>
 
 <!-- List - Checkboxes -->
 <div class="checkbox-container" *ngIf="inputType === 'checkbox'">

@@ -9,7 +9,6 @@ export class ObjectFormComponent {
   @Input() formTitle: string = ''    // Title of the form for reference during relationship selecting
   @Output() formDataChanged = new EventEmitter<any>()  // Output event to notify parent components whenever form data changes
   @ViewChild('objectForm') form!: ElementRef<HTMLFormElement>    // Reference to the actual HTML form element within the template
-  @Input() listValues: string[] = []
 
   // Method to check if the form is valid using native browser validation
   isValid() {
@@ -33,14 +32,10 @@ export class ObjectFormComponent {
           }
         }
       } else if (element.type === 'text' && element.getAttribute('data-input-type') === 'stringlist') {
-        const enteredValues = this.listValues.filter(value => value.trim() !== '')
-        if (enteredValues.length > 0) {
-          const existingData = data.find(item => item.key === element.id)
-          if (existingData) {
-            existingData.value.push(...enteredValues)
-          } else {
-            data.push({ key: element.id, value: [...enteredValues] })
-          }
+        if (element.value.trim() !== '') {
+          // Split the input string by commas and insert each option into an array
+          const listInput = element.value.split(',').map((option: string) => option.trim()).filter((option: string) => option !== '')
+          data.push({ key: element.id, value: listInput })
         }
       } else {
         if (element.value.trim() !== '') {
