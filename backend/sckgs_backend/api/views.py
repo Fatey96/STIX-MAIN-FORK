@@ -18,7 +18,7 @@ def add_stix_data(request):
         dataset_size = data['dataset']
         stix_objects = data['objects']
         relationships = data['relationships']
-
+        
         proportions = {}
         for stix in (stix_objects):
             proportion = StixProportions().get_proportions(stix['type'])
