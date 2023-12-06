@@ -22,10 +22,6 @@ export class ObjectFormComponent {
 
     // Loop through all form controls (like input, select, textarea) in the form
     Array.from(formElement.elements).forEach((element: any) => {
-      if (element.id === 'empty-select') {    // Skip the empty-select in the checkbox one
-        return
-      }
-
       if (element.type === 'checkbox') {
         if (element.checked) {
           const existingData = data.find(item => item.key === element.id)   // Used to see if an option has been checked and added or not
@@ -34,6 +30,12 @@ export class ObjectFormComponent {
           } else {
             data.push({ key: element.id, value: [element.value] })
           }
+        }
+      } else if (element.type === 'text' && element.getAttribute('data-input-type') === 'stringlist') {
+        if (element.value.trim() !== '') {
+          // Split the input string by commas and insert each option into an array
+          const listInput = element.value.split(',').map((option: string) => option.trim()).filter((option: string) => option !== '')
+          data.push({ key: element.id, value: listInput })
         }
       } else {
         if (element.value.trim() !== '') {

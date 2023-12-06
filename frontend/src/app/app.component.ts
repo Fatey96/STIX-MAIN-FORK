@@ -399,9 +399,9 @@ export class AppComponent {
 
     //! Generate dataset #, objects, and relationships
     // Generate the objects array
-    const objectsOutput = stixObjects.map(obj => ({
+    const objectsOutput = stixObjects.map(({ id, ...obj }) => ({    // Include all properties of the STIX objects excluding the id
       type: obj.type,
-      name: obj.name
+      ...obj
     }))
 
     // Generate the relationships array using index references
@@ -432,7 +432,6 @@ export class AppComponent {
     this.sendPostRequest(this.jsonOutput).subscribe(
       response => {
         console.log(response.message)
-        console.log(this.stixTotals)
         this.stixTotals = response.stix_totals
         this.stixBundle = response.bundle
       },

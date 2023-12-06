@@ -5,30 +5,72 @@
     <span class="requirement-indicator" [class.required]="isRequired">{{ isRequired ? 'Required' : 'Optional' }}</span>
 </div>
 
+<!----------------->
+<!-- Input Types -->
+<!----------------->
+
+<!-- Text -->
 <input class="input-field" type="text" *ngIf="inputType === 'text'" [id]="stixProperty" [name]="propertyName"
     [required]="isRequired" />
 
-<input class="input-field" type="datetime-local" *ngIf="inputType === 'timestamp' || inputType === 'timestamp'"
-    [id]="stixProperty" [name]="propertyName" [required]="isRequired" />
+<!-- List - Stringlist -->
+<input class="input-field" type="text" *ngIf="inputType === 'stringlist'" [id]="stixProperty" [name]="propertyName" [required]="isRequired" 
+    data-input-type="stringlist" [placeholder]="'E.g. ' + propertyName + '1, ' + propertyName + '2'" />  
 
+<!-- Timestamp -->
+<input class="input-field" type="datetime-local" *ngIf="inputType === 'timestamp'" [id]="stixProperty"
+    [name]="propertyName" [required]="isRequired" />
+
+<!-- Float -->
+<input class="input-field" type="number" *ngIf="inputType === 'float'" [id]="stixProperty" [name]="propertyName"
+    [required]="isRequired" step="any" onkeydown="return event.key !== 'e'" />
+
+<!-- Integer -->
+<input class="input-field" type="number" *ngIf="inputType === 'integer'" [id]="stixProperty" [name]="propertyName"
+    [required]="isRequired" step="1" [min]="1" [max]="999999999" (input)="updateNumber($event)" 
+    onkeydown="return event.key !== 'e' && event.key !== '.' && event.key !== '-' && event.key !== '+'" 
+/>
+
+<!-- Open-Vocab - Selects -->
 <select class="select-field" *ngIf="inputType === 'select'" [id]="stixProperty" [name]="propertyName"
     [required]="isRequired">
     <option class="option-field" value=""></option>
     <option class="option-field" *ngFor="let option of selectOptions" [value]="option">{{ option }}</option>
 </select>
 
+<!-- List - Checkboxes -->
 <div class="checkbox-container" *ngIf="inputType === 'checkbox'">
-    <div class="checkbox-select" (click)="toggleCheckboxArea()">
-        <select id="empty-select">
-            <option>{{ selectedCheckboxOptions.length }} selected</option>
-        </select>
-        <div class="hide-dropdown"></div>
-    </div>
-    <div class="checkbox-option-container" [ngClass]="{ 'hidden': !isCheckboxAreaExpanded }">
+    <button class="dropdown-container" (click)="openDropdown()">
+        <p>{{ selectedCheckboxOptions.length }} selected</p>
+        <mat-icon class="mat-icon">expand_more</mat-icon>
+    </button>
+
+    <div class="checkbox-option-container" [ngClass]="{ 'hidden': !isDropdownExpanded }">
         <div class="checkbox-option" *ngFor="let option of checkboxOptions">
             <input class="checkbox-box" type="checkbox" [id]="stixProperty" [name]="propertyName"
-                [required]="isRequired" [value]="option" [checked]="selectedCheckboxOptions.includes(option)" (change)="updateSelectedOptions(option)" />
+                [required]="isRequired" [value]="option" [checked]="selectedCheckboxOptions.includes(option)"
+                (change)="updateSelectedOptions(option)" />
             {{ option }}
         </div>
     </div>
 </div>
+
+<!------------------------->
+<!-- Special Input Types -->
+<!------------------------->
+
+<!-- Latitude (for Location) -->
+<input class="input-field" type="number" *ngIf="inputType === 'latitude'" [id]="stixProperty" [name]="propertyName"
+    [required]="isRequired" step="any" [min]="-90" [max]="90" (input)="updateNumber($event)" onkeydown="return event.key !== 'e'" />
+
+<!-- Longitude (for Location) -->
+<input class="input-field" type="number" *ngIf="inputType === 'longitude'" [id]="stixProperty" [name]="propertyName"
+    [required]="isRequired" step="any" [min]="-180" [max]="180" (input)="updateNumber($event)" onkeydown="return event.key !== 'e'" />
+
+<!-- Precision (for Location) -->
+<input class="input-field" type="number" *ngIf="inputType === 'precision'" [id]="stixProperty" [name]="propertyName"
+    [required]="isRequired" step="any" [min]="0" (input)="updateNumber($event)" onkeydown="return event.key !== 'e' && event.key !== '-' && event.key !== '+'" />
+
+<!-- Product (for Malware Analysis) -->
+<input class="input-field" type="text" *ngIf="inputType === 'product'" [id]="stixProperty" [name]="propertyName"
+    [required]="isRequired" (input)="updateText($event)" />
