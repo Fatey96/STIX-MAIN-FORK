@@ -8,7 +8,7 @@
 ## Getting Started
 ### Frontend
 #### Prerequisites
-*Install [Node.js](https://nodejs.org/en) which includes [Node Package Manager] (https://www.npmjs.com/)
+*Install [Node.js](https://nodejs.org/en)
 
 *Install the Angular CLI globally:
 ```bash
