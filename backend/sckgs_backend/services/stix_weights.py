@@ -1,8 +1,8 @@
 
-class StixProportions:
+class StixWeights:
     @staticmethod
-    def get_proportions(type):
-        proportions = {          
+    def get_weights(stix_objects):
+        weights = {          
             'attack-pattern': 0.05,
             'campaign': 0.05,
             'course-of-action': 0.05,
@@ -24,21 +24,26 @@ class StixProportions:
             'vulnerability': 0.10
         }
 
-        return proportions.get(type)
+        stix_weights = {}
+        for stix in (stix_objects):
+            weight = weights.get(stix['type'])
+            stix_weights[stix_objects.index(stix)] = weight
+
+        return stix_weights
     
     @staticmethod
-    def adjust_proportions(proportions):
-        current_sum = sum(proportions.values())
+    def adjust_weights(weights):
+        current_sum = sum(weights.values())
 
         if current_sum < 1:
             difference = 1 - current_sum
-            adjustment = difference / len(proportions)
-            adjusted_dict = {key: value + adjustment for key, value in proportions.items()}
+            adjustment = difference / len(weights)
+            adjusted_dict = {key: value + adjustment for key, value in weights.items()}
         elif current_sum > 1:
             difference = current_sum - 1
-            adjustment = difference / len(proportions)
-            adjusted_dict = {key: value - adjustment for key, value in proportions.items()}
+            adjustment = difference / len(weights)
+            adjusted_dict = {key: value - adjustment for key, value in weights.items()}
         else:
-             proportions
+            return weights
         
         return adjusted_dict

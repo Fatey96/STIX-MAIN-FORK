@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from services.stix_builder_factory import StixBuilderFactory
 from services.relationship_builder import RelationshipBuilder
-from services.stix_proportions import StixProportions
+from services.stix_weights import StixWeights
 from stix2 import Bundle
 from itertools import cycle
 import pyperclip
@@ -19,17 +19,14 @@ def add_stix_data(request):
         stix_objects = data['objects']
         relationships = data['relationships']
         
-        proportions = {}
-        for stix in (stix_objects):
-            proportion = StixProportions().get_proportions(stix['type'])
-            proportions[stix_objects.index(stix)] = proportion
+        weights = StixWeights.get_weights(stix_objects)
+        adjusted_weights = StixWeights.adjust_weights(weights)
 
-        adjusted_proportions = StixProportions.adjust_proportions(proportions)
         stix_dict = {index: [] for index in range(len(stix_objects))}
         total_created = 0
         type_totals = {}
         for stix in stix_objects:
-            count = int(dataset_size * adjusted_proportions[stix_objects.index(stix)])
+            count = int(dataset_size * adjusted_weights[stix_objects.index(stix)])
 
             type_totals[stix['type']] = count
             total_created += count
