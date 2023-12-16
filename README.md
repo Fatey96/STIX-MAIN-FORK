@@ -11,7 +11,8 @@ The goal of this project is to synthetically generate cyber knowledge graphs to 
 
 - [Django](https://www.djangoproject.com/)
 
--[STIX 2 Python API](https://stix2.readthedocs.io/en/latest/)
+- [STIX 2 Python API](https://stix2.readthedocs.io/en/latest/)
+
 ## Getting Started
 ### Frontend
 #### Prerequisites
