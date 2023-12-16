@@ -14,6 +14,8 @@ The goal of this project is to synthetically generate cyber knowledge graphs to 
 - [STIX 2 Python API](https://stix2.readthedocs.io/en/latest/)
 
 ## Getting Started
+### File Structure
+This project is divided into a frontend and backend folder each with their own README files.
 ### Frontend
 #### Prerequisites
 - Install [Node.js](https://nodejs.org/en)
@@ -40,7 +42,7 @@ The goal of this project is to synthetically generate cyber knowledge graphs to 
 ```bash
   UNCP-Synthetic-Cyber-Knowledge-Graph\frontend>
 ```
-2. Intall dependecies:
+2. Install dependecies:
 ```bash
   pip install -r requirements.txt
 ```
