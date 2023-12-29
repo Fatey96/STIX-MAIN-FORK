@@ -5,6 +5,7 @@ from .stix_builders import (attack_pattern_builder, campaign_builder, course_of_
     vulnerability_builder)
 
 class StixBuilderFactory:
+    # Based on the STIX object type call the appropriate builder class
     @staticmethod
     def create(stix):
         match stix['type']:

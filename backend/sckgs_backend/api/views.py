@@ -13,23 +13,31 @@ import pyperclip
 @csrf_exempt
 def add_stix_data(request):
     if request.method == 'POST':
-        # Parse the incoming JSON data
+        # Parse the incoming JSON data.
         data = json.loads(request.body)
         dataset_size = data['dataset']
         stix_objects = data['objects']
         relationships = data['relationships']
         
+        # Get the SDOs weights.
         weights = StixWeights.get_weights(stix_objects)
+        # Adjust the SDOs weights
         adjusted_weights = StixWeights.adjust_weights(weights)
 
+        # Dictionary to store created SDOs.
+        # SDOs are stored in the stix_dict based on their index in the stix_objects array.
         stix_dict = {index: [] for index in range(len(stix_objects))}
+        # The total number of created SDOs.
         total_created = 0
+        # Dictionary of SDO type totals.
         type_totals = {}
+        # create SDOs.
         for stix in stix_objects:
+            # Determine how many SDOs to create base on its type.
             count = int(dataset_size * adjusted_weights[stix_objects.index(stix)])
-
-            type_totals[stix['type']] = count
+            # Add count to total_created.
             total_created += count
+            # Store count in type_totals dictionary.
             if stix['type'] in  type_totals:
                 type_totals[stix['type']] += count
             else:
