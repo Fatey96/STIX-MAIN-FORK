@@ -73,3 +73,13 @@
     padding: .45em;
     border: 4px solid var(--accent-teal);
 }
+
+.location-message {
+    margin: .5em;
+    padding: 0;
+    text-align: left;
+}
+
+.location-message span {
+    font-weight: 500;
+}
