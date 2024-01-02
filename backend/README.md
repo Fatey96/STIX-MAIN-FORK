@@ -1,6 +1,7 @@
 # Backend Breakdown
 
 ## api folder
+```bash
 api
  ┣ migrations
  ┣ admin.py
@@ -10,12 +11,14 @@ api
  ┣ urls.py
  ┣ views.py
  ┗ __init__.py
+```
 
  ### test.py
 
  ### views.py
 
  ## services folder
+ ```bash
  services
  ┣ stix_builders
  ┃ ┣ attack_pattern_builder.py
@@ -43,6 +46,7 @@ api
  ┣ stix_builder_factory.py
  ┣ stix_weights.py
  ┗ __init__.py
+```
 
  ### stix_builders folder
 
