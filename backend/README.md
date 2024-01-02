@@ -12,10 +12,13 @@
   ┣ views.py
   ┗ __init__.py
 ```
-
  ### test.py
-
+This is where tests are written. Currently there is one test , test_json_data, that generates a small SKG using mock data. Tests can be run by navigating to the backend folder and entering the following command in the console:
+```bash
+ py manage.py test
+```
  ### views.py
+The views.py file acts as the controller class. It handles browser request, retreives data, and returns a response. Currently it does this in one large method and should be broken up into smaller methods.
 
  ## services folder
  ```bash
