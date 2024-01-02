@@ -31,7 +31,7 @@ This project is divided into a frontend and backend folder each with their own R
 ```
 2. Navigate to the frontend folder:
 ```bash
-  UNCP-Synthetic-Cyber-Knowledge-Graph\frontend>
+  UNCP-Synthetic-Cyber-Knowledge-Graph\frontend
 ```
 3. Install dependencies:
 ```bash
@@ -40,9 +40,27 @@ This project is divided into a frontend and backend folder each with their own R
 ### Backend
 1. Navigate to the backend folder:
 ```bash
-  UNCP-Synthetic-Cyber-Knowledge-Graph\frontend>
+  UNCP-Synthetic-Cyber-Knowledge-Graph\backend
 ```
 2. Install dependecies:
 ```bash
   pip install -r requirements.txt
 ```
+#### Activate Website
+1. Navigate to the frontend folder:
+```bash
+  UNCP-Synthetic-Cyber-Knowledge-Graph\frontend
+```
+2. Start Angular server:
+```bash
+  ng serve
+```
+3. Navigate to the backend folder:
+```bash
+  UNCP-Synthetic-Cyber-Knowledge-Graph\backend
+```
+4. Start Django server:
+```bash
+  py manage.py runserver
+```
+5. Go to http://localhost:4200/ in your browser.
